@@ -172,7 +172,7 @@ exports.forgotPassword = async (req, res) => {
       });
     }
 
-    // Generate reset token (email sending later)
+    // Generate reset token (we'll implement email sending later)
     const resetToken = Math.random().toString(36).substring(2, 15);
     
     // Hash token and set to resetPasswordToken field
@@ -184,7 +184,7 @@ exports.forgotPassword = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Password reset token generated',
-      resetToken // this would be sent via email
+      resetToken // In production, this would be sent via email
     });
 
   } catch (error) {
@@ -196,6 +196,3 @@ exports.forgotPassword = async (req, res) => {
     });
   }
 };
-
-
-
