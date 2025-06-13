@@ -50,41 +50,36 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const errors = validationResult(req); // Already defined
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('Validation errors:', errors.array());
     return res.status(400).json({ message: errors.array()[0].msg });
   }
 
   const { email, password } = req.body;
+  console.log('Login attempt:', { email, password });
 
   try {
     let user = await User.findOne({ email });
+    console.log('Found user:', user);
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log('Password match:', isMatch);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      process.env.SECRET_KEY,
-      { expiresIn: '1h' },
-      (err, token) => {
-        if (err) throw err;
-        res.status(200).json({ message: 'Login successful', token });
-      }
-    );
+    const payload = { user: { id: user.id } };
+    jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' }, (err, token) => {
+      if (err) throw err;
+      res.status(200).json({ message: 'Login successful', token });
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server error');
   }
 };
+
