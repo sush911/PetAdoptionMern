@@ -1,25 +1,17 @@
 const express = require('express');
-const { body, validationResult } = require('express-validator');
 const router = express.Router();
+const { check, validationResult } = require('express-validator');
 const authController = require('../controllers/authController');
-//can hit api
-router.post(
-  '/register',
-  [
-    body('name').notEmpty().withMessage('Name is required'),
-    body('email').isEmail().withMessage('Please enter your valid email'),
-    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
-  ],
-  authController.register
-);
 
-router.post(
-  '/login',
-  [
-    body('email').isEmail().withMessage('Please enter a valid email'),
-    body('password').notEmpty().withMessage('Password is required'),
-  ],
-  authController.login
-);
+router.post('/register', [
+  check('name', 'Name is required').notEmpty(),
+  check('email', 'Please include a valid email').isEmail(),
+  check('password', 'Password is required').notEmpty(),
+], authController.register);
+
+router.post('/login', [
+  check('email', 'Please include a valid email').isEmail(),
+  check('password', 'Password is required').notEmpty(),
+], authController.login);
 
 module.exports = router;
