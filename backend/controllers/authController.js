@@ -48,7 +48,6 @@ exports.register = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
-
 exports.login = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -66,8 +65,15 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    console.log('Comparing password:', password, 'with hash:', user.password);
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('Password match:', isMatch);
+    console.log('Password match result:', isMatch);
+
+    // Manual test to verify bcrypt
+    const testHash = await bcrypt.hash('password123', 10); // Generate a new hash to compare
+    const testMatch = await bcrypt.compare('password123', testHash);
+    console.log('Test match with newly generated hash:', testMatch);
+
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
@@ -75,11 +81,11 @@ exports.login = async (req, res) => {
     const payload = { user: { id: user.id } };
     jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
+      console.log('Generated token:', token);
       res.status(200).json({ message: 'Login successful', token });
     });
   } catch (error) {
-    console.error(error.message);
+    console.error('Error during login:', error.message);
     res.status(500).send('Server error');
   }
 };
-
