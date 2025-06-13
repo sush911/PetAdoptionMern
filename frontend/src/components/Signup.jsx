@@ -29,8 +29,9 @@ export const Signup = () => {
     }
     try {
       const response = await axios.post('http://localhost:5000/api/register', form);
+      // Optionally automatically login after signup:
       localStorage.setItem('token', response.data.token);
-      navigate('/login');
+      navigate('/home');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
     }
