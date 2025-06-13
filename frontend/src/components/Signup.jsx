@@ -35,55 +35,52 @@ export const Signup = ({ setToken }) => {
           onError={(e) => (e.target.src = 'https://via.placeholder.com/600x800')}
         />
       </div>
-      <div className="col-12 col-md-6 bg-light d-flex align-items-center justify-content-center">
+      <div className="col-12 col-md-6 bg-dark d-flex align-items-center justify-content-center">
         <div className="w-100 p-4" style={{ maxWidth: '500px' }}>
-          <h2 className="text-dark text-center mb-4">Register</h2>
+          <h2 className="text-white text-center mb-4">Register</h2>
           {error && <div className="alert alert-danger">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="name" className="form-label text-dark">Name</label>
+              <label htmlFor="name" className="form-label text-white">Name</label>
               <input
                 type="text"
                 name="name"
                 id="name"
                 value={form.name}
                 onChange={handleChange}
-                className="form-control"
+                className="form-control bg-secondary text-light border-0"
                 required
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="email" className="form-label text-dark">Email</label>
+              <label htmlFor="email" className="form-label text-white">Email</label>
               <input
                 type="email"
                 name="email"
                 id="email"
                 value={form.email}
                 onChange={handleChange}
-                className="form-control"
+                className="form-control bg-secondary text-light border-0"
                 required
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="password" className="form-label text-dark">Password</label>
+              <label htmlFor="password" className="form-label text-white">Password</label>
               <input
                 type="password"
                 name="password"
                 id="password"
                 value={form.password}
                 onChange={handleChange}
-                className="form-control"
+                className="form-control bg-secondary text-light border-0"
                 required
               />
             </div>
-            <button type="submit" className="btn btn-info w-100 text-white">
-              REGISTER
-            </button>
+            <button type="submit" className="btn btn-info w-100 text-white">REGISTER</button>
           </form>
-          <p className="text-center mt-4">Already have an account?</p>
-          <Link to="/login" className="btn btn-info w-100 text-white">
-            Login
-          </Link>
+
+          <p className="text-white text-center mt-4">Already have an account?</p>
+          <Link to="/login" className="btn btn-info w-100 text-white">Login</Link>
         </div>
       </div>
     </div>
