@@ -4,7 +4,7 @@ import axios from 'axios';
 import { FaGooglePlusG, FaXTwitter } from 'react-icons/fa6';
 import { FaFacebookF } from 'react-icons/fa';
 import { SlSocialVkontakte } from 'react-icons/sl';
-import loginImg from '../assets/2.jpg';
+import loginImg from '../assets/1.jpg';
 
 export const Signin = ({ setToken }) => {
   const navigate = useNavigate();
