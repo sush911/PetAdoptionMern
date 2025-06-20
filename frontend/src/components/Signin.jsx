@@ -42,7 +42,15 @@ export const Signin = ({ setToken }) => {
           onError={(e) => (e.target.src = 'https://via.placeholder.com/600x800')}
         />
       </div>
-      <div className="col-12 col-md-6 bg-dark d-flex align-items-center justify-content-center">
+      <div className="col-12 col-md-6 bg-dark d-flex flex-column align-items-center justify-content-start pt-4">
+        {/* Title at the top */}
+        <h1
+          className="text-info text-center display-3 fw-bold mb-4"
+          style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}
+        >
+          PetForPat
+        </h1>
+
         <div className="w-100 p-4" style={{ maxWidth: '500px' }}>
           <h2 className="text-white text-center mb-4">Login</h2>
           {error && <div className="alert alert-danger">{error}</div>}
