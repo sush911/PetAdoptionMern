@@ -6,9 +6,9 @@ import { Signin } from './components/Signin';
 import Home from './components/Home';
 import RescueForm from './components/RescueForm';
 import RescueList from './components/RescueList';
-import PetsList from './components/PetsList';
+import PetsList from './components/PetsList'; 
 import Contact from './components/Contact';
-import Navbar from './components/Navbar';
+
 
 
 const App = () => {
@@ -20,7 +20,6 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar token={token} setToken={setToken} />
 
       <Routes>
         <Route path="/" element={token ? <Navigate to="/home" /> : <Navigate to="/login" />} />

@@ -4,7 +4,6 @@ import axios from 'axios';
 import { FaGooglePlusG, FaXTwitter } from 'react-icons/fa6';
 import { FaFacebookF } from 'react-icons/fa';
 import { SlSocialVkontakte } from 'react-icons/sl';
-import loginImg from '../assets/1.jpg';
 
 export const Signin = ({ setToken }) => {
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ export const Signin = ({ setToken }) => {
     <div className="d-flex vh-100">
       <div className="col-md-6 p-0 d-none d-md-block">
         <img
-          src={loginImg}
+          src="/assets/1.jpg"
           alt="Login Visual"
           className="w-100 h-100 object-fit-cover"
           onError={(e) => (e.target.src = 'https://via.placeholder.com/600x800')}
