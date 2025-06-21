@@ -97,3 +97,48 @@ button:focus-visible {
   margin: 0;
   height: 100%;
 }
+
+/* ===== RescueForm dark styles ===== */
+
+.dark-form-container {
+  background-color: #222; /* dark background */
+  color: #eee; /* light text */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.7);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+/* Style inputs and textarea for dark mode */
+.dark-form-container input,
+.dark-form-container textarea,
+.dark-form-container select {
+  background-color: #333;
+  border: 1px solid #555;
+  color: #eee;
+}
+
+.dark-form-container input::placeholder,
+.dark-form-container textarea::placeholder {
+  color: #bbb;
+}
+
+.dark-form-container label {
+  color: #ccc;
+}
+
+/* Button style */
+.dark-form-container button {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 0.6em 1.2em;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.dark-form-container button:hover {
+  background-color: #535bf2;
+}
