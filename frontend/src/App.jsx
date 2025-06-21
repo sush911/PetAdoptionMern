@@ -7,8 +7,7 @@ import Home from './components/Home';
 import RescueForm from './components/RescueForm';
 import RescueList from './components/RescueList';
 import PetsList from './components/PetsList';
-import Contact from './components/contact';
-import About from './components/About';
+import Contact from './components/Contact';
 import Navbar from './components/navbar';
 
 const App = () => {
@@ -20,21 +19,17 @@ const App = () => {
 
   return (
     <Router>
-      {/* Navbar shows on all pages */}
       <Navbar token={token} setToken={setToken} />
-      
+
       <Routes>
         <Route path="/" element={token ? <Navigate to="/home" /> : <Navigate to="/login" />} />
         <Route path="/signup" element={<Signup setToken={setToken} />} />
         <Route path="/login" element={<Signin setToken={setToken} />} />
-
         <Route path="/home" element={<ProtectedRoute><Home setToken={setToken} /></ProtectedRoute>} />
         <Route path="/rescue" element={<ProtectedRoute><RescueForm /></ProtectedRoute>} />
         <Route path="/admin/rescues" element={<ProtectedRoute><RescueList /></ProtectedRoute>} />
         <Route path="/admin/pets" element={<ProtectedRoute><PetsList /></ProtectedRoute>} />
         <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
-        <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
-
         <Route path="/register" element={<Navigate to="/signup" />} />
       </Routes>
     </Router>
