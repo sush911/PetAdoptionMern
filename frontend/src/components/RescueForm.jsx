@@ -21,7 +21,7 @@ const RescueForm = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const res = await axios.post('http://localhost:5000/api/rescues', formData, {
+      await axios.post('http://localhost:5000/api/rescues', formData, {
         headers: { 'x-auth-token': token },
       });
       setMessage('Rescue request submitted successfully.');
@@ -39,34 +39,48 @@ const RescueForm = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2 className="text-center mb-4">Report a Rescue</h2>
+    <div className="container my-5" style={{ maxWidth: '600px' }}>
+      <h2 className="text-center mb-4 text-success">Report a Rescue</h2>
       {message && <div className="alert alert-info">{message}</div>}
-      <form onSubmit={handleSubmit} className="border p-4 rounded shadow-sm">
+      <form onSubmit={handleSubmit} className="shadow-sm p-4 rounded bg-light border">
         <div className="mb-3">
           <label className="form-label">Your Name</label>
           <input className="form-control" name="name" value={formData.name} onChange={handleChange} required />
         </div>
+
         <div className="mb-3">
           <label className="form-label">Phone Number</label>
-          <input className="form-control" name="phone" value={formData.phone} onChange={handleChange} required />
+          <input className="form-control" name="phone" type="tel" value={formData.phone} onChange={handleChange} required />
         </div>
+
         <div className="mb-3">
           <label className="form-label">Location</label>
           <input className="form-control" name="location" value={formData.location} onChange={handleChange} required />
         </div>
+
         <div className="mb-3">
           <label className="form-label">Animal Type</label>
-          <select className="form-select" name="animalType" value={formData.animalType} onChange={handleChange}>
+          <select className="form-select" name="animalType" value={formData.animalType} onChange={handleChange} required>
             <option value="dog">Dog</option>
             <option value="cat">Cat</option>
           </select>
         </div>
+
         <div className="mb-3">
           <label className="form-label">Description</label>
-          <textarea className="form-control" name="description" value={formData.description} onChange={handleChange} rows="3" />
+          <textarea
+            className="form-control"
+            name="description"
+            rows="4"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
         </div>
-        <button type="submit" className="btn btn-primary w-100">Submit Rescue</button>
+
+        <button className="btn btn-success w-100 d-flex justify-content-center align-items-center" type="submit">
+          <i className="bi bi-heart-pulse me-2"></i>Submit Rescue Request
+        </button>
       </form>
     </div>
   );
