@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import loginImg from '../assets/2.jpg';
 
 export const Signup = ({ setToken }) => {
   const navigate = useNavigate();
@@ -29,7 +28,7 @@ export const Signup = ({ setToken }) => {
     <div className="d-flex vh-100">
       <div className="col-md-6 p-0 d-none d-md-block">
         <img
-          src={loginImg}
+          src="/assets/2.jpg"
           alt="Register Visual"
           className="w-100 h-100 object-fit-cover"
           onError={(e) => (e.target.src = 'https://via.placeholder.com/600x800')}
