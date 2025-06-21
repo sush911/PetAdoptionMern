@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
 import { Signup } from './components/Signup';
 import { Signin } from './components/Signin';
 import Home from './components/Home';
 import RescueForm from './components/RescueForm';
 import RescueList from './components/RescueList';
-// import PetList from './components/PetList'; // Optional
-// import Contact from './components/Contact'; // Optional
+import PetsList from './components/PetsList';
+import Contact from './components/contact';
+import About from './components/About';
+import Navbar from './components/navbar';
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -17,6 +20,9 @@ const App = () => {
 
   return (
     <Router>
+      {/* Navbar shows on all pages */}
+      <Navbar token={token} setToken={setToken} />
+      
       <Routes>
         <Route path="/" element={token ? <Navigate to="/home" /> : <Navigate to="/login" />} />
         <Route path="/signup" element={<Signup setToken={setToken} />} />
@@ -25,10 +31,9 @@ const App = () => {
         <Route path="/home" element={<ProtectedRoute><Home setToken={setToken} /></ProtectedRoute>} />
         <Route path="/rescue" element={<ProtectedRoute><RescueForm /></ProtectedRoute>} />
         <Route path="/admin/rescues" element={<ProtectedRoute><RescueList /></ProtectedRoute>} />
-
-        {/* Optional future routes */}
-        {/* <Route path="/admin/pets" element={<ProtectedRoute><PetList /></ProtectedRoute>} /> */}
-        {/* <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} /> */}
+        <Route path="/admin/pets" element={<ProtectedRoute><PetsList /></ProtectedRoute>} />
+        <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+        <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
 
         <Route path="/register" element={<Navigate to="/signup" />} />
       </Routes>
