@@ -31,8 +31,8 @@ const Contact = () => {
 
       <div className="mt-5 text-center">
         <h5 className="mb-3">Contact Info:</h5>
-        <p><i className="bi bi-envelope-fill me-2"></i>adopt@petrescue.org</p>
-        <p><i className="bi bi-telephone-fill me-2"></i>+1 234-567-8901</p>
+        <p><i className="bi bi-envelope-fill me-2"></i>adopt@petrescuenepal.org</p>
+        <p><i className="bi bi-telephone-fill me-2"></i>98000000</p>
       </div>
     </div>
   );

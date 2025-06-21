@@ -1,42 +1,41 @@
-import React, { useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    }
-  }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    alert('You have been logged out.');
-    navigate('/login');
-  };
-
   const imageCount = 6;
   const petImages = Array.from({ length: imageCount }, (_, i) => `/assets/${i + 1}.jpg`);
 
   return (
     <div className="container my-5">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="text-primary fw-bold">Welcome to Pet Adoption!</h1>
-        <button
-          className="btn btn-outline-danger d-flex align-items-center"
-          onClick={handleLogout}
-          title="Logout"
-        >
-          <i className="bi bi-box-arrow-right me-2"></i>Logout
-        </button>
-      </div>
-      <p className="lead text-secondary text-center mb-5">
+      {/* Header */}
+      <h1 className="text-primary fw-bold mb-3">Welcome to Pet Adoption!</h1>
+      <p className="lead text-secondary mb-4">
         Explore and adopt your new furry friend.
       </p>
 
-      <div className="row g-3 mb-5">
+      {/* Button Panel - Moved here and styled nicely */}
+      <div className="dashboard-buttons mb-5 p-4 rounded shadow-sm bg-light">
+        <h3 className="mb-4 text-center" style={{ color: '#343a40', letterSpacing: '1.5px' }}>
+          Quick Actions
+        </h3>
+        <div className="d-flex flex-wrap justify-content-center gap-3">
+          <Link to="/rescue" className="btn btn-warning btn-lg">
+            <i className="bi bi-heart-fill me-2"></i>Rescue a Pet
+          </Link>
+          <Link to="/admin/rescues" className="btn btn-secondary btn-lg">
+            <i className="bi bi-list-check me-2"></i>Rescue Admin
+          </Link>
+          <Link to="/admin/pets" className="btn btn-primary btn-lg">
+            <i className="bi bi-paw-fill me-2"></i>Manage Pets
+          </Link>
+          <Link to="/contact" className="btn btn-outline-dark btn-lg">
+            <i className="bi bi-envelope me-2"></i>Contact Us
+          </Link>
+        </div>
+      </div>
+
+      {/* Pet cards */}
+      <div className="row g-3">
         {petImages.map((img, idx) => (
           <div key={idx} className="col-sm-6 col-md-4">
             <div className="card shadow-sm pet-card-hover">
@@ -52,21 +51,6 @@ const Home = () => {
             </div>
           </div>
         ))}
-      </div>
-
-      <div className="text-center">
-        <Link to="/rescue" className="btn btn-warning mx-2 mb-2">
-          <i className="bi bi-heart-fill me-1"></i>Rescue a Pet
-        </Link>
-        <Link to="/admin/rescues" className="btn btn-secondary mx-2 mb-2">
-          <i className="bi bi-list-check me-1"></i>Rescue Admin
-        </Link>
-        <Link to="/admin/pets" className="btn btn-primary mx-2 mb-2">
-          <i className="bi bi-paw-fill me-1"></i>Manage Pets
-        </Link>
-        <Link to="/contact" className="btn btn-outline-dark mx-2 mb-2">
-          <i className="bi bi-envelope me-1"></i>Contact Us
-        </Link>
       </div>
 
       <style>{`
