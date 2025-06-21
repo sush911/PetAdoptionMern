@@ -46,7 +46,7 @@ const Home = () => {
                 style={{ height: '220px', objectFit: 'cover' }}
               />
               <div className="card-body text-center">
-                <p className="card-text fw-semibold mb-0">Pet #{idx + 1}</p>
+                <p className="card-text fw-semibold mb-0">Pet {idx + 1}</p>
               </div>
             </div>
           </div>

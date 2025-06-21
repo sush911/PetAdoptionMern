@@ -15,7 +15,7 @@ const Layout = ({ children, setToken }) => {
     <>
       <nav style={navStyle}>
         <div style={logoStyle}>
-          <Link to="/home" style={linkStyle}>Pet Rescue</Link>
+          <Link to="/home" style={logoLinkStyle}>Pet Rescue</Link>
         </div>
         <div style={navLinksStyle}>
           <Link to="/home" style={linkStyle}>Home</Link>
@@ -26,56 +26,67 @@ const Layout = ({ children, setToken }) => {
         </div>
       </nav>
 
-      <main style={{ padding: '1rem' }}>
+      <main style={mainWrapperStyle}>
         {children}
       </main>
     </>
   );
 };
 
-// Styles
+// === Styles ===
+
 const navStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  backgroundColor: '#1a1a2e',
+  backgroundColor: '#0f172a', // dark navy
   padding: '1rem 2rem',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.7)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)',
   fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
 };
 
 const logoStyle = {
   fontSize: '1.8rem',
   fontWeight: '900',
-  color: '#fca311',
+};
+
+const logoLinkStyle = {
+  color: '#38bdf8', // sky blue
+  textDecoration: 'none',
   letterSpacing: '3px',
-  cursor: 'default',
 };
 
 const navLinksStyle = {
   display: 'flex',
-  gap: '2.5rem', // <-- this creates space between links
-  fontSize: '1.1rem',
-  fontWeight: '600',
-  color: '#e5e5e5',
+  gap: '2rem',
+  alignItems: 'center',
 };
 
 const linkStyle = {
-  color: '#e5e5e5',
+  color: '#f1f5f9', // light text
+  fontSize: '1.1rem',
   textDecoration: 'none',
+  fontWeight: '600',
   transition: 'color 0.3s',
 };
 
 const logoutBtnStyle = {
-  backgroundColor: '#f94144',
+  backgroundColor: '#ef4444', // red
   border: 'none',
-  padding: '0.4rem 1rem',
+  padding: '0.5rem 1rem',
   borderRadius: '6px',
   color: '#fff',
   cursor: 'pointer',
-  fontWeight: '700',
+  fontWeight: '600',
   fontSize: '1rem',
   marginLeft: '1rem',
+};
+
+const mainWrapperStyle = {
+  padding: '2rem',
+  backgroundColor: '#1e293b', // slate dark
+  color: '#e2e8f0', // text color for content
+  minHeight: '100vh',
 };
 
 export default Layout;
