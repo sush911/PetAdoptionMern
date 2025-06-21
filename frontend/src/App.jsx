@@ -8,7 +8,8 @@ import RescueForm from './components/RescueForm';
 import RescueList from './components/RescueList';
 import PetsList from './components/PetsList';
 import Contact from './components/Contact';
-import Navbar from './components/navbar';
+import Navbar from './components/Navbar';
+
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
