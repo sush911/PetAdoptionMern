@@ -30,23 +30,62 @@ const PetForm = ({ refresh, pet, setPet }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="border p-3 rounded bg-gray mb-3">
-      <div className="row">
+    <form onSubmit={handleSubmit} className="border rounded shadow-sm p-4 bg-light mb-4">
+      <div className="row g-3">
         <div className="col-md-6">
-          <input name="name" placeholder="Name" className="form-control mb-2" value={formData.name} onChange={handleChange} />
-          <select name="type" className="form-select mb-2" value={formData.type} onChange={handleChange}>
-            <option value="">Type</option>
+          <input
+            name="name"
+            placeholder="Name"
+            className="form-control"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <select
+            name="type"
+            className="form-select mt-3"
+            value={formData.type}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Type</option>
             <option value="dog">Dog</option>
             <option value="cat">Cat</option>
           </select>
-          <input name="age" type="number" placeholder="Age" className="form-control mb-2" value={formData.age} onChange={handleChange} />
-          <input name="image" placeholder="Image file name (e.g., 1.jpg)" className="form-control mb-2" value={formData.image} onChange={handleChange} />
+          <input
+            name="age"
+            type="number"
+            placeholder="Age"
+            className="form-control mt-3"
+            value={formData.age}
+            onChange={handleChange}
+            required
+            min="0"
+          />
+          <input
+            name="image"
+            placeholder="Image filename (e.g., 1.jpg)"
+            className="form-control mt-3"
+            value={formData.image}
+            onChange={handleChange}
+            required
+          />
         </div>
         <div className="col-md-6">
-          <textarea name="description" placeholder="Description" className="form-control" value={formData.description} onChange={handleChange} />
+          <textarea
+            name="description"
+            placeholder="Description"
+            className="form-control h-100"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
         </div>
       </div>
-      <button className="btn btn-primary mt-3" type="submit">{pet?._id ? 'Update' : 'Add'} Pet</button>
+      <button className="btn btn-primary mt-4 d-flex align-items-center" type="submit">
+        <i className={`bi ${pet?._id ? 'bi-pencil-square' : 'bi-plus-circle'} me-2`}></i>
+        {pet?._id ? 'Update' : 'Add'} Pet
+      </button>
     </form>
   );
 };

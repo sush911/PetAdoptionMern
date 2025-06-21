@@ -17,26 +17,37 @@ const Home = () => {
     navigate('/login');
   };
 
-  const imageCount = 6; // Adjust based on how many images you have in /assets
+  const imageCount = 6;
   const petImages = Array.from({ length: imageCount }, (_, i) => `/assets/${i + 1}.jpg`);
 
   return (
-    <div className="container mt-5">
+    <div className="container my-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Welcome to Pet Adoption!</h1>
-        <button className="btn btn-info text-white" onClick={handleLogout}>
-          Logout
+        <h1 className="text-primary fw-bold">Welcome to Pet Adoption!</h1>
+        <button
+          className="btn btn-outline-danger d-flex align-items-center"
+          onClick={handleLogout}
+          title="Logout"
+        >
+          <i className="bi bi-box-arrow-right me-2"></i>Logout
         </button>
       </div>
-      <p className="lead text-muted">Explore and adopt your new furry friend.</p>
+      <p className="lead text-secondary text-center mb-5">
+        Explore and adopt your new furry friend.
+      </p>
 
-      <div className="row mb-5">
+      <div className="row g-3 mb-5">
         {petImages.map((img, idx) => (
-          <div className="col-md-4 mb-3" key={idx}>
-            <div className="card shadow-sm">
-              <img src={img} className="card-img-top" alt={`Pet ${idx + 1}`} />
+          <div key={idx} className="col-sm-6 col-md-4">
+            <div className="card shadow-sm pet-card-hover">
+              <img
+                src={img}
+                className="card-img-top rounded"
+                alt={`Pet ${idx + 1}`}
+                style={{ height: '220px', objectFit: 'cover' }}
+              />
               <div className="card-body text-center">
-                <p className="card-text">Pet #{idx + 1}</p>
+                <p className="card-text fw-semibold mb-0">Pet #{idx + 1}</p>
               </div>
             </div>
           </div>
@@ -44,11 +55,28 @@ const Home = () => {
       </div>
 
       <div className="text-center">
-        <Link to="/rescue" className="btn btn-warning mx-2">Rescue a Pet</Link>
-        <Link to="/admin/rescues" className="btn btn-secondary mx-2">Rescue Admin</Link>
-        <Link to="/admin/pets" className="btn btn-primary mx-2">Manage Pets</Link>
-        <Link to="/contact" className="btn btn-outline-dark mx-2">Contact Us</Link>
+        <Link to="/rescue" className="btn btn-warning mx-2 mb-2">
+          <i className="bi bi-heart-fill me-1"></i>Rescue a Pet
+        </Link>
+        <Link to="/admin/rescues" className="btn btn-secondary mx-2 mb-2">
+          <i className="bi bi-list-check me-1"></i>Rescue Admin
+        </Link>
+        <Link to="/admin/pets" className="btn btn-primary mx-2 mb-2">
+          <i className="bi bi-paw-fill me-1"></i>Manage Pets
+        </Link>
+        <Link to="/contact" className="btn btn-outline-dark mx-2 mb-2">
+          <i className="bi bi-envelope me-1"></i>Contact Us
+        </Link>
       </div>
+
+      <style>{`
+        .pet-card-hover:hover {
+          transform: scale(1.05);
+          transition: transform 0.3s ease;
+          box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+          cursor: pointer;
+        }
+      `}</style>
     </div>
   );
 };
