@@ -1,9 +1,14 @@
-// petController.js
-const Pet = require('../models/pet');
+const Pet = require('../models/Pet');
 
 exports.getAllPets = async (req, res) => {
   const pets = await Pet.find();
   res.json(pets);
+};
+
+exports.getPetById = async (req, res) => {
+  const pet = await Pet.findById(req.params.id);
+  if (!pet) return res.status(404).json({ message: 'Pet not found' });
+  res.json(pet);
 };
 
 exports.createPet = async (req, res) => {
@@ -13,8 +18,8 @@ exports.createPet = async (req, res) => {
 };
 
 exports.updatePet = async (req, res) => {
-  const updated = await Pet.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updated);
+  const pet = await Pet.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.json(pet);
 };
 
 exports.deletePet = async (req, res) => {
