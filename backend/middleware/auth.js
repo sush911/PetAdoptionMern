@@ -1,4 +1,3 @@
-// middleware/auth.js
 const jwt = require('jsonwebtoken');
 
 // Middleware to verify any valid user token
@@ -9,8 +8,8 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY); // Use your .env key
-    req.user = decoded; // decoded contains id, role, etc.
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    req.user = decoded.user; // NOTE: decode nested user object here
     next();
   } catch (error) {
     console.error('Token verification failed:', error.message);

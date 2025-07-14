@@ -1,25 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
 const petController = require('../controllers/petController');
+const multer = require('multer');
+const path = require('path');
+const { verifyToken, verifyAdmin } = require('../middleware/auth'); // import middleware
 
-// Configure multer storage, for example storing files in ./uploads folder
+// Multer setup for image uploads
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads/'); // Make sure this folder exists or create it
+  destination: (req, file, cb) => cb(null, 'uploads'),  // folder relative to backend root
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
   },
-  filename: function (req, file, cb) {
-    // Set filename to be unique: e.g. timestamp + originalname
-    cb(null, Date.now() + '-' + file.originalname);
+});
+
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    // Accept images only
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
   }
 });
 
-const upload = multer({ storage });
-
-// Routes
-router.get('/', petController.getAllPets);
-router.post('/', upload.single('image'), petController.createPet); // <-- use multer middleware here
-router.put('/:id', petController.updatePet);
-router.delete('/:id', petController.deletePet);
+// Protect all pet routes with verifyToken + verifyAdmin middleware
+router.get('/', verifyToken, verifyAdmin, petController.getAllPets);
+router.post('/', verifyToken, verifyAdmin, upload.single('image'), petController.createPet);
+router.put('/:id', verifyToken, verifyAdmin, upload.single('image'), petController.updatePet);
+router.delete('/:id', verifyToken, verifyAdmin, petController.deletePet);
 
 module.exports = router;
