@@ -1,88 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import PetForm from './PetForm';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const PetsList = () => {
+const PetsList = ({ refreshFlag, setPet }) => {
   const [pets, setPets] = useState([]);
-  const [editingPet, setEditingPet] = useState(null);
-
-  const fetchPets = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/api/pets', {
-        headers: { 'x-auth-token': localStorage.getItem('token') }
-      });
-      setPets(res.data);
-    } catch (error) {
-      console.error('Failed to fetch pets', error);
-    }
-  };
 
   useEffect(() => {
-    fetchPets();
-  }, []);
-
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this pet?')) return;
-
-    try {
-      await axios.delete(`http://localhost:5000/api/pets/${id}`, {
-        headers: { 'x-auth-token': localStorage.getItem('token') }
+    const fetchPets = async () => {
+      const token = localStorage.getItem('token');
+      const res = await axios.get('http://localhost:5000/api/pets', {
+        headers: { 'x-auth-token': token }
       });
-      fetchPets();
-    } catch (error) {
-      console.error('Failed to delete pet', error);
-    }
+      setPets(res.data);
+    };
+    fetchPets();
+  }, [refreshFlag]);
+
+  const handleDelete = async id => {
+    const token = localStorage.getItem('token');
+    await axios.delete(`http://localhost:5000/api/pets/${id}`, {
+      headers: { 'x-auth-token': token }
+    });
+    setPets(pets.filter(p => p._id !== id));
   };
 
   return (
-    <div className="mb-5">
-      <h3 className="mb-4 text-primary">Manage Pets</h3>
-      <PetForm refresh={fetchPets} pet={editingPet} setPet={setEditingPet} />
-
-      <div className="row g-4">
-        {pets.map(p => (
-          <div key={p._id} className="col-md-4">
-            <div className="card shadow-sm pet-card-hover h-100">
-              <img
-                src={`/assets/${p.image}`}
-                className="card-img-top rounded-top"
-                alt={p.name}
-                style={{ height: '220px', objectFit: 'cover' }}
-              />
-              <div className="card-body d-flex flex-column">
-                <h5 className="card-title">{p.name}</h5>
-                <p className="card-text text-muted">{p.type}, {p.age} yrs</p>
-                <div className="mt-auto d-flex justify-content-end gap-2">
-                  <button
-                    className="btn btn-warning btn-sm d-flex align-items-center"
-                    onClick={() => setEditingPet(p)}
-                    title="Edit Pet"
-                  >
-                    <i className="bi bi-pencil-fill"></i>
-                  </button>
-                  <button
-                    className="btn btn-danger btn-sm d-flex align-items-center"
-                    onClick={() => handleDelete(p._id)}
-                    title="Delete Pet"
-                  >
-                    <i className="bi bi-trash-fill"></i>
-                  </button>
-                </div>
+    <div className="row g-4 mt-3">
+      {pets.map(pet => (
+        <div className="col-sm-6 col-md-4 col-lg-3" key={pet._id}>
+          <div className="card h-100 shadow border-0 pet-hover">
+            <img
+              src={`http://localhost:5000/uploads/${pet.image}`}
+              alt={pet.name}
+              className="card-img-top"
+              style={{ height: '220px', objectFit: 'cover' }}
+              onError={e => {
+                e.target.src = '/default.jpg'; // fallback image if broken
+              }}
+            />
+            <div className="card-body d-flex flex-column justify-content-between">
+              <div>
+                <h5 className="card-title text-primary fw-bold">{pet.name}</h5>
+                <p className="text-muted mb-2"><strong>Type:</strong> {pet.type === 'dog' ? '🐶 Dog' : '🐱 Cat'}</p>
+                <p className="card-text">{pet.description}</p>
+              </div>
+              <div className="d-flex justify-content-between mt-3">
+                <button
+                  className="btn btn-outline-secondary btn-sm"
+                  onClick={() => setPet(pet)}
+                >
+                  <i className="bi bi-pencil-square me-1" /> Edit
+                </button>
+                <button
+                  className="btn btn-outline-danger btn-sm"
+                  onClick={() => handleDelete(pet._id)}
+                >
+                  <i className="bi bi-trash3 me-1" /> Delete
+                </button>
               </div>
             </div>
           </div>
-        ))}
-        {pets.length === 0 && (
-          <p className="text-center text-muted">No pets available.</p>
-        )}
-      </div>
+        </div>
+      ))}
 
+      {/* Custom CSS for hover effect */}
       <style>{`
-        .pet-card-hover:hover {
+        .pet-hover:hover {
           transform: scale(1.03);
-          box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
-          transition: all 0.3s ease;
-          cursor: pointer;
+          transition: 0.3s ease-in-out;
         }
       `}</style>
     </div>
