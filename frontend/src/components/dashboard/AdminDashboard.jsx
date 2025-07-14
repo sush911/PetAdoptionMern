@@ -1,37 +1,95 @@
 import React from 'react';
-import PetsList from './PetsList';
-import RescueList from './RescueList';
+import PetsList from '../pets/PetsList';
+import RescueList from '../rescue/RescueList';
+import ContactList from '../contact/ContactList';
 
-const AdminDashboard = () => (
-  <div className="container my-5">
-    <h2 className="mb-4 text-primary text-center">Admin Dashboard</h2>
+const AdminDashboard = () => {
+  return (
+    <div className="container my-5">
+      <h1 className="text-center mb-5 text-primary fw-bold">Admin Dashboard</h1>
+      <div className="accordion" id="adminAccordion">
 
-    <div className="row g-4">
-      <div className="col-lg-6">
-        <div className="card shadow-sm border-primary">
-          <div className="card-header bg-primary text-white d-flex align-items-center">
-            <i className="bi bi-paw-fill me-2"></i>
-            <h5 className="mb-0">Manage Pets</h5>
-          </div>
-          <div className="card-body">
-            <PetsList />
+        {/* Pets CRUD */}
+        <div className="accordion-item">
+          <h2 className="accordion-header" id="headingPets">
+            <button
+              className="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapsePets"
+              aria-expanded="true"
+              aria-controls="collapsePets"
+            >
+              🐶 Manage Pets
+            </button>
+          </h2>
+          <div
+            id="collapsePets"
+            className="accordion-collapse collapse show"
+            aria-labelledby="headingPets"
+            data-bs-parent="#adminAccordion"
+          >
+            <div className="accordion-body">
+              <PetsList />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="col-lg-6">
-        <div className="card shadow-sm border-success">
-          <div className="card-header bg-success text-white d-flex align-items-center">
-            <i className="bi bi-heart-pulse-fill me-2"></i>
-            <h5 className="mb-0">Rescue Requests</h5>
-          </div>
-          <div className="card-body">
-            <RescueList />
+        {/* Rescue Requests */}
+        <div className="accordion-item">
+          <h2 className="accordion-header" id="headingRescue">
+            <button
+              className="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseRescue"
+              aria-expanded="false"
+              aria-controls="collapseRescue"
+            >
+              🚨 Manage Rescues
+            </button>
+          </h2>
+          <div
+            id="collapseRescue"
+            className="accordion-collapse collapse"
+            aria-labelledby="headingRescue"
+            data-bs-parent="#adminAccordion"
+          >
+            <div className="accordion-body">
+              <RescueList />
+            </div>
           </div>
         </div>
+
+        {/* Contact Messages */}
+        <div className="accordion-item">
+          <h2 className="accordion-header" id="headingContact">
+            <button
+              className="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseContact"
+              aria-expanded="false"
+              aria-controls="collapseContact"
+            >
+              📬 Manage Contact Messages
+            </button>
+          </h2>
+          <div
+            id="collapseContact"
+            className="accordion-collapse collapse"
+            aria-labelledby="headingContact"
+            data-bs-parent="#adminAccordion"
+          >
+            <div className="accordion-body">
+              <ContactList />
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default AdminDashboard;
