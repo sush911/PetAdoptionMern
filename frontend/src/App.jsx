@@ -9,6 +9,8 @@ import RescueForm from './components/rescue/RescueForm';
 import RescueList from './components/rescue/RescueList';
 import PetsList from './components/pets/PetsList'; 
 import Contact from './components/pages/Contact';
+import ContactList from './components/pages/ContactList';
+import AdminDashboard from './components/dashboard/AdminDashboard';
 import Layout from './components/layout/Layout'; 
 
 const App = () => {
@@ -47,6 +49,17 @@ const App = () => {
           }
         />
         <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Layout setToken={setToken}>
+                <AdminDashboard />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/admin/rescues"
           element={
             <ProtectedRoute>
@@ -72,6 +85,16 @@ const App = () => {
             <ProtectedRoute>
               <Layout setToken={setToken}>
                 <Contact />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/contact"
+          element={
+            <ProtectedRoute>
+              <Layout setToken={setToken}>
+                <ContactList />
               </Layout>
             </ProtectedRoute>
           }

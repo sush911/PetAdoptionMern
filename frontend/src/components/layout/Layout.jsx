@@ -20,7 +20,7 @@ const Layout = ({ children, setToken }) => {
         <div style={navLinksStyle}>
           <Link to="/home" style={linkStyle}>Home</Link>
           <Link to="/rescue" style={linkStyle}>Report Rescue</Link>
-          <Link to="/admin/rescues" style={linkStyle}>Admin</Link>
+          <Link to="/admin" style={linkStyle}>Admin</Link>
           <Link to="/contact" style={linkStyle}>Contact</Link>
           <button onClick={handleLogout} style={logoutBtnStyle}>Logout</button>
         </div>
@@ -39,7 +39,7 @@ const navStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  backgroundColor: '#0f172a', // dark navy
+  backgroundColor: '#0f172a',
   padding: '1rem 2rem',
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)',
   fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
@@ -51,7 +51,7 @@ const logoStyle = {
 };
 
 const logoLinkStyle = {
-  color: '#38bdf8', // sky blue
+  color: '#38bdf8',
   textDecoration: 'none',
   letterSpacing: '3px',
 };
@@ -63,7 +63,7 @@ const navLinksStyle = {
 };
 
 const linkStyle = {
-  color: '#f1f5f9', // light text
+  color: '#f1f5f9',
   fontSize: '1.1rem',
   textDecoration: 'none',
   fontWeight: '600',
@@ -71,7 +71,7 @@ const linkStyle = {
 };
 
 const logoutBtnStyle = {
-  backgroundColor: '#ef4444', // red
+  backgroundColor: '#ef4444',
   border: 'none',
   padding: '0.5rem 1rem',
   borderRadius: '6px',
@@ -84,8 +84,8 @@ const logoutBtnStyle = {
 
 const mainWrapperStyle = {
   padding: '2rem',
-  backgroundColor: '#1e293b', // slate dark
-  color: '#e2e8f0', // text color for content
+  backgroundColor: '#1e293b',
+  color: '#e2e8f0',
   minHeight: '100vh',
 };
 

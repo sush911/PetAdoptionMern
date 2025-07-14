@@ -3,12 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
+// Route files
 const authRoutes = require('./routes/auth');
 const petRoutes = require('./routes/pets');
-const rescueRoutes = require('./routes/rescue');      // Singular filename: rescue.js
+const rescueRoutes = require('./routes/rescue');
 const contactRoutes = require('./routes/contact');
 
-const verifyToken = require('./middleware/auth');
+// ✅ Destructure middleware functions properly
+const { verifyToken, verifyAdmin } = require('./middleware/auth');
 
 const app = express();
 
@@ -21,7 +23,7 @@ app.use(express.json());
 
 // Public Routes
 app.use('/api', authRoutes);
-app.use('/api/contact', contactRoutes); // GET and DELETE can optionally use verifyToken
+app.use('/api/contact', contactRoutes); // POST is public, GET/DELETE protected inside route
 
 // Protected Routes
 app.use('/api/pets', verifyToken, petRoutes);

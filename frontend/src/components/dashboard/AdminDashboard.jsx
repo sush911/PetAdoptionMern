@@ -1,7 +1,7 @@
 import React from 'react';
 import PetsList from '../pets/PetsList';
 import RescueList from '../rescue/RescueList';
-import ContactList from '../contact/ContactList';
+import ContactList from '../pages/ContactList';
 
 const AdminDashboard = () => {
   return (

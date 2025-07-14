@@ -1,3 +1,4 @@
+// middleware/auth.js
 const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
@@ -15,9 +16,7 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-// Middleware to check if user is admin
 const verifyAdmin = (req, res, next) => {
-  // Make sure verifyToken has run first and req.user exists
   if (!req.user) {
     return res.status(401).json({ message: 'Unauthorized' });
   }

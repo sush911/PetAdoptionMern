@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const Home = () => {
   const imageCount = 6;
@@ -12,27 +11,6 @@ const Home = () => {
       <p className="lead text-secondary mb-4">
         Explore and adopt your new furry friend.
       </p>
-
-      {/* Button Panel - Moved here and styled nicely */}
-      <div className="dashboard-buttons mb-5 p-4 rounded shadow-sm bg-light">
-        <h3 className="mb-4 text-center" style={{ color: '#343a40', letterSpacing: '1.5px' }}>
-          Quick Actions
-        </h3>
-        <div className="d-flex flex-wrap justify-content-center gap-3">
-          <Link to="/rescue" className="btn btn-warning btn-lg">
-            <i className="bi bi-heart-fill me-2"></i>Rescue a Pet
-          </Link>
-          <Link to="/admin/rescues" className="btn btn-secondary btn-lg">
-            <i className="bi bi-list-check me-2"></i>Rescue Admin
-          </Link>
-          <Link to="/admin/pets" className="btn btn-primary btn-lg">
-            <i className="bi bi-paw-fill me-2"></i>Manage Pets
-          </Link>
-          <Link to="/contact" className="btn btn-outline-dark btn-lg">
-            <i className="bi bi-envelope me-2"></i>Contact Us
-          </Link>
-        </div>
-      </div>
 
       {/* Pet cards */}
       <div className="row g-3">
@@ -53,6 +31,7 @@ const Home = () => {
         ))}
       </div>
 
+      {/* Hover effect */}
       <style>{`
         .pet-card-hover:hover {
           transform: scale(1.05);
