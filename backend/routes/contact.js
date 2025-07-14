@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ContactMessage = require('../models/ContactMessage');
-const verifyToken = require('../middleware/auth'); // Import auth middleware
+const { verifyToken, verifyAdmin } = require('../middleware/auth'); // Destructure both middlewares
 
 // POST /api/contact - Public: Users submit contact messages
 router.post('/', async (req, res) => {
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
 });
 
 // GET /api/contact - Admin only: Get all contact messages
-router.get('/', verifyToken, async (req, res) => {
+router.get('/', verifyToken, verifyAdmin, async (req, res) => {
   try {
     const messages = await ContactMessage.find().sort({ createdAt: -1 });
     res.json(messages);
@@ -33,7 +33,7 @@ router.get('/', verifyToken, async (req, res) => {
 });
 
 // DELETE /api/contact/:id - Admin only: Delete a contact message
-router.delete('/:id', verifyToken, async (req, res) => {
+router.delete('/:id', verifyToken, verifyAdmin, async (req, res) => {
   try {
     const message = await ContactMessage.findById(req.params.id);
     if (!message) {
