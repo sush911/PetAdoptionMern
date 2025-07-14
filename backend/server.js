@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const petRoutes = require('./routes/pets');
 const rescueRoutes = require('./routes/rescue'); // singular (file named rescue.js)
 const verifyToken = require('./middleware/auth');
+const contactRoutes = require('./routes/contact'); 
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api', authRoutes);
 app.use('/api/pets', verifyToken, petRoutes);
 app.use('/api/rescues', verifyToken, rescueRoutes);
+app.use('/api/contact', contactRoutes); 
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
