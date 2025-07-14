@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Signup } from './components/Signup';
-import { Signin } from './components/Signin';
-import Home from './components/Home';
-import RescueForm from './components/RescueForm';
-import RescueList from './components/RescueList';
-import PetsList from './components/PetsList'; 
-import Contact from './components/Contact';
-import Layout from './components/Layout';  // <-- Import Layout
+import { Signup } from './components/auth/Signup';
+import { Signin } from './components/auth/Signin';
+import Home from './components/home/Home';
+import RescueForm from './components/rescue/RescueForm';
+import RescueList from './components/rescue/RescueList';
+import PetsList from './components/pets/PetsList'; 
+import Contact from './components/pages/Contact';
+import Layout from './components/layout/Layout'; 
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
