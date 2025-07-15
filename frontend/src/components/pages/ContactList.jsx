@@ -1,59 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api/axios';
 
 const ContactList = () => {
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    axios.get('http://localhost:5000/api/contact', {
-      headers: { 'x-auth-token': localStorage.getItem('token') }
-    }).then(res => setMessages(res.data))
-      .catch(console.error);
-  }, []);
-
-  const handleDelete = (id) => {
-    if (!window.confirm('Delete this message?')) return;
-    axios.delete(`http://localhost:5000/api/contact/${id}`, {
-      headers: { 'x-auth-token': localStorage.getItem('token') }
-    }).then(() => setMessages(messages.filter(m => m._id !== id)))
-      .catch(console.error);
+  const fetchContacts = async () => {
+    try {
+      const res = await api.get('/contact');
+      setMessages(res.data);
+    } catch (error) {
+      console.error('Error fetching contacts:', error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (messages.length === 0) {
-    return <p className="text-center text-muted">No messages found.</p>;
-  }
+  useEffect(() => {
+    fetchContacts();
+  }, []);
+
+  const handleDelete = async id => {
+    if (!window.confirm('Delete this message?')) return;
+    try {
+      await api.delete(`/contact/${id}`);
+      setMessages(prev => prev.filter(m => m._id !== id));
+    } catch (error) {
+      console.error('Error deleting message:', error.response?.data?.message || error.message);
+    }
+  };
+
+  if (loading) return <p className="text-center mt-5">Loading contact messages...</p>;
 
   return (
-    <div className="table-responsive">
-      <table className="table table-hover">
-        <thead className="table-light">
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Message</th>
-            <th>Sent At</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {messages.map(msg => (
-            <tr key={msg._id}>
-              <td>{msg.name}</td>
-              <td>{msg.email}</td>
-              <td>{msg.message}</td>
-              <td>{new Date(msg.createdAt).toLocaleString()}</td>
-              <td>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(msg._id)}
-                >
-                  <i className="bi bi-trash-fill"></i> Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="container my-5">
+      <h2 className="mb-4 text-center text-primary fw-bold display-6">
+        <i className="bi bi-envelope-paper me-2" /> Contact Messages
+      </h2>
+
+      {messages.length === 0 ? (
+        <p className="text-center text-muted fs-5">No contact messages found.</p>
+      ) : (
+        <div className="table-responsive">
+          <table className="table table-striped table-hover">
+            <thead className="table-light">
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Sent At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {messages.map(msg => (
+                <tr key={msg._id}>
+                  <td>{msg.name}</td>
+                  <td>{msg.email}</td>
+                  <td>{msg.message}</td>
+                  <td>{new Date(msg.createdAt).toLocaleString()}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => handleDelete(msg._id)}
+                    >
+                      <i className="bi bi-trash-fill" /> Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

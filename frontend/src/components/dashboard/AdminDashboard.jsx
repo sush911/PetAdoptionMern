@@ -1,73 +1,203 @@
-import React from 'react';
-import { jwtDecode } from 'jwt-decode'; // ✅ Fix here
-import Unauthorized from '../pages/Unauthorized';
-import PetsList from '../pets/PetsList';
-import RescueList from '../rescue/RescueList';
-import ContactList from '../pages/ContactList';
+// src/components/dashboard/AdminDashboard.jsx
+import React, { useState, useEffect } from 'react';
+import api from '../../api/axios';
+import PetForm from '../pets/PetForm';
 
 const AdminDashboard = () => {
-  const token = localStorage.getItem('token');
+  const [pets, setPets] = useState([]);
+  const [rescues, setRescues] = useState([]);
+  const [contacts, setContacts] = useState([]);
+  const [editingPet, setEditingPet] = useState(null);
 
-  if (!token) return <Unauthorized />;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  let decoded;
-  try {
-    decoded = jwtDecode(token); // ✅ Use the correct function name
-  } catch (e) {
-    return <Unauthorized />;
+  useEffect(() => {
+    const fetchAllData = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const [petsRes, rescuesRes, contactsRes] = await Promise.all([
+          api.get('/pets'),
+          api.get('/rescues'),
+          api.get('/contact'),
+        ]);
+        setPets(petsRes.data);
+        setRescues(rescuesRes.data);
+        setContacts(contactsRes.data);
+      } catch (err) {
+        setError('Failed to load data. Please try again.');
+        console.error(err);
+      }
+      setLoading(false);
+    };
+    fetchAllData();
+  }, []);
+
+  const handleDeletePet = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this pet?')) return;
+    try {
+      await api.delete(`/pets/${id}`);
+      setPets((prev) => prev.filter((p) => p._id !== id));
+    } catch (err) {
+      alert('Failed to delete pet.');
+      console.error(err);
+    }
+  };
+
+  const handlePetAddedOrUpdated = (pet) => {
+    setPets((prev) =>
+      prev.some((p) => p._id === pet._id)
+        ? prev.map((p) => (p._id === pet._id ? pet : p))
+        : [...prev, pet]
+    );
+    setEditingPet(null);
+  };
+
+  const handleEditPet = (pet) => {
+    setEditingPet(pet);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const cancelEdit = () => setEditingPet(null);
+
+  if (loading) {
+    return (
+      <div className="text-center my-5">
+        <div className="spinner-border text-success" role="status"></div>
+        <p>Loading dashboard...</p>
+      </div>
+    );
   }
 
-  if (!decoded?.isAdmin) {
-    return <Unauthorized />;
+  if (error) {
+    return <div className="alert alert-danger my-5 text-center">{error}</div>;
   }
 
   return (
-    <div className="container my-5">
-      <h1 className="text-center text-primary fw-bold mb-4">Admin Dashboard</h1>
+    <div className="container my-4">
+      <h1 className="mb-4 text-success fw-bold">Admin Dashboard</h1>
 
-      <div className="accordion" id="adminAccordion">
-        {/* Pets */}
-        <div className="accordion-item">
-          <h2 className="accordion-header" id="headingPets">
-            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePets">
-              🐶 Manage Pets
-            </button>
-          </h2>
-          <div id="collapsePets" className="accordion-collapse collapse show" data-bs-parent="#adminAccordion">
-            <div className="accordion-body">
-              <PetsList />
-            </div>
-          </div>
-        </div>
+      {/* Pet Form */}
+      <PetForm onPetAdded={handlePetAddedOrUpdated} existingPet={editingPet} onCancelEdit={cancelEdit} />
 
-        {/* Rescues */}
-        <div className="accordion-item">
-          <h2 className="accordion-header" id="headingRescue">
-            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRescue">
-              🚨 Manage Rescues
-            </button>
-          </h2>
-          <div id="collapseRescue" className="accordion-collapse collapse" data-bs-parent="#adminAccordion">
-            <div className="accordion-body">
-              <RescueList />
-            </div>
-          </div>
-        </div>
-
-        {/* Contact */}
-        <div className="accordion-item">
-          <h2 className="accordion-header" id="headingContact">
-            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContact">
-              📬 Manage Contacts
-            </button>
-          </h2>
-          <div id="collapseContact" className="accordion-collapse collapse" data-bs-parent="#adminAccordion">
-            <div className="accordion-body">
-              <ContactList />
-            </div>
-          </div>
-        </div>
+      {/* Manage Pets */}
+      <h3 className="mt-5 mb-3 text-success">Manage Pets</h3>
+      <div className="table-responsive">
+        <table className="table table-striped align-middle">
+          <thead className="table-success">
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pets.map((pet) => (
+              <tr key={pet._id}>
+                <td>
+                  <img
+                    src={`http://localhost:5000/uploads/${pet.image}`}
+                    alt={pet.name}
+                    width="60"
+                    height="60"
+                    style={{ objectFit: 'cover', borderRadius: '5px' }}
+                  />
+                </td>
+                <td>{pet.name}</td>
+                <td>{pet.type === 'dog' ? '🐶 Dog' : pet.type === 'cat' ? '🐱 Cat' : '❓ Unknown'}</td>
+                <td>{pet.description}</td>
+                <td>
+                  <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditPet(pet)}>
+                    ✏️ Edit
+                  </button>
+                  <button className="btn btn-danger btn-sm" onClick={() => handleDeletePet(pet._id)}>
+                    🗑 Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
+
+      {/* Rescue Table */}
+      <section className="mb-5">
+        <h3 className="mb-3 text-warning">Manage Rescue Requests</h3>
+        {rescues.length === 0 ? (
+          <p>No rescue requests found.</p>
+        ) : (
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead className="table-warning">
+                <tr>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Location</th>
+                  <th>Animal</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rescues.map((r) => (
+                  <tr key={r._id}>
+                    <td>{r.name}</td>
+                    <td>{r.phone}</td>
+                    <td>{r.location}</td>
+                    <td>{r.animalType}</td>
+                    <td>{r.description}</td>
+                    <td>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDeleteRescue(r._id)}>
+                        🗑 Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      {/* Contact Messages */}
+      <section>
+        <h3 className="mb-3 text-info">Manage Contact Messages</h3>
+        {contacts.length === 0 ? (
+          <p>No messages found.</p>
+        ) : (
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead className="table-info">
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Message</th>
+                  <th>Sent At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {contacts.map((c) => (
+                  <tr key={c._id}>
+                    <td>{c.name}</td>
+                    <td>{c.email}</td>
+                    <td>{c.message}</td>
+                    <td>{new Date(c.createdAt).toLocaleString()}</td>
+                    <td>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDeleteContact(c._id)}>
+                        🗑 Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
     </div>
   );
 };
