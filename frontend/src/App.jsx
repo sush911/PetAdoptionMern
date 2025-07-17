@@ -10,6 +10,8 @@ import RescueForm from './components/rescue/RescueForm';
 import Contact from './components/pages/Contact';
 import AdminDashboard from './components/dashboard/AdminDashboard';
 import Layout from './components/layout/Layout';
+import AdoptUs from './components/pages/AdoptUs';
+
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -51,6 +53,15 @@ const App = () => {
                 <Home />
               </Layout>
             </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/adopt"
+          element={
+            <Layout setToken={setToken}>
+              <AdoptUs />
+            </Layout>
           }
         />
 

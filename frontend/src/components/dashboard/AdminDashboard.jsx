@@ -1,19 +1,32 @@
 // src/components/dashboard/AdminDashboard.jsx
 import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import api from '../../api/axios';
 import PetForm from '../pets/PetForm';
+import Unauthorized from '../pages/Unauthorized'; // ✅ imported
 
 const AdminDashboard = () => {
+  const [isAdmin, setIsAdmin] = useState(null); // ✅ distinguish admin status
   const [pets, setPets] = useState([]);
   const [rescues, setRescues] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [editingPet, setEditingPet] = useState(null);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    try {
+      const token = localStorage.getItem('token');
+      const decoded = jwtDecode(token);
+      setIsAdmin(decoded?.user?.role === 'admin');
+    } catch (err) {
+      setIsAdmin(false);
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchAllData = async () => {
+      if (isAdmin === false) return;
       setLoading(true);
       setError('');
       try {
@@ -32,7 +45,7 @@ const AdminDashboard = () => {
       setLoading(false);
     };
     fetchAllData();
-  }, []);
+  }, [isAdmin]);
 
   const handleDeletePet = async (id) => {
     if (!window.confirm('Are you sure you want to delete this pet?')) return;
@@ -60,6 +73,46 @@ const AdminDashboard = () => {
   };
 
   const cancelEdit = () => setEditingPet(null);
+
+  const handleDeleteRescue = async (id) => {
+    if (!window.confirm('Delete this rescue request?')) return;
+    try {
+      await api.delete(`/rescues/${id}`);
+      setRescues((prev) => prev.filter((r) => r._id !== id));
+    } catch (err) {
+      alert('Failed to delete rescue.');
+      console.error(err);
+    }
+  };
+
+  const handleDeleteContact = async (id) => {
+    if (!window.confirm('Delete this message?')) return;
+    try {
+      await api.delete(`/contact/${id}`);
+      setContacts((prev) => prev.filter((c) => c._id !== id));
+    } catch (err) {
+      alert('Failed to delete contact.');
+      console.error(err);
+    }
+  };
+
+  if (isAdmin === null) {
+    return (
+      <div className="text-center my-5">
+        <div className="spinner-border text-success" role="status"></div>
+        <p>Checking permissions...</p>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="container my-4">
+        <h1 className="mb-4 text-success fw-bold">Admin Dashboard</h1>
+        <Unauthorized />
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -107,7 +160,13 @@ const AdminDashboard = () => {
                   />
                 </td>
                 <td>{pet.name}</td>
-                <td>{pet.type === 'dog' ? '🐶 Dog' : pet.type === 'cat' ? '🐱 Cat' : '❓ Unknown'}</td>
+                <td>
+                  {pet.type?.toLowerCase() === 'dog'
+                    ? '🐶 Dog'
+                    : pet.type?.toLowerCase() === 'cat'
+                    ? '🐱 Cat'
+                    : '❓ Unknown'}
+                </td>
                 <td>{pet.description}</td>
                 <td>
                   <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditPet(pet)}>

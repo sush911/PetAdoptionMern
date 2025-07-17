@@ -35,12 +35,10 @@ router.get('/', verifyToken, verifyAdmin, async (req, res) => {
 // DELETE /api/contact/:id - Admin only: Delete a contact message
 router.delete('/:id', verifyToken, verifyAdmin, async (req, res) => {
   try {
-    const message = await ContactMessage.findById(req.params.id);
-    if (!message) {
+    const deleted = await ContactMessage.findByIdAndDelete(req.params.id);
+    if (!deleted) {
       return res.status(404).json({ msg: 'Message not found' });
     }
-
-    await message.remove();
     res.json({ msg: 'Message deleted' });
   } catch (error) {
     console.error(error.message);

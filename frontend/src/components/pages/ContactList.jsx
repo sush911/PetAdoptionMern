@@ -30,20 +30,23 @@ const ContactList = () => {
     }
   };
 
-  if (loading) return <p className="text-center mt-5">Loading contact messages...</p>;
-
   return (
-    <div className="container my-5">
-      <h2 className="mb-4 text-center text-primary fw-bold display-6">
-        <i className="bi bi-envelope-paper me-2" /> Contact Messages
+    <div className="container py-5">
+      <h2 className="text-center text-primary fw-bold mb-5 display-5">
+        <i className="bi bi-envelope-paper me-2"></i>Contact Messages
       </h2>
 
-      {messages.length === 0 ? (
-        <p className="text-center text-muted fs-5">No contact messages found.</p>
+      {loading ? (
+        <div className="text-center my-5">
+          <div className="spinner-border text-primary" role="status"></div>
+          <p className="mt-3 text-muted">Fetching messages...</p>
+        </div>
+      ) : messages.length === 0 ? (
+        <div className="alert alert-secondary text-center fs-5">No contact messages found.</div>
       ) : (
         <div className="table-responsive">
-          <table className="table table-striped table-hover">
-            <thead className="table-light">
+          <table className="table table-bordered table-hover align-middle">
+            <thead className="table-light text-center">
               <tr>
                 <th>Name</th>
                 <th>Email</th>
@@ -57,14 +60,14 @@ const ContactList = () => {
                 <tr key={msg._id}>
                   <td>{msg.name}</td>
                   <td>{msg.email}</td>
-                  <td>{msg.message}</td>
+                  <td className="text-wrap" style={{ maxWidth: '300px' }}>{msg.message}</td>
                   <td>{new Date(msg.createdAt).toLocaleString()}</td>
-                  <td>
+                  <td className="text-center">
                     <button
-                      className="btn btn-sm btn-danger"
+                      className="btn btn-outline-danger btn-sm"
                       onClick={() => handleDelete(msg._id)}
                     >
-                      <i className="bi bi-trash-fill" /> Delete
+                      <i className="bi bi-trash-fill me-1"></i>Delete
                     </button>
                   </td>
                 </tr>

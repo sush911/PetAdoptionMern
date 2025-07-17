@@ -96,7 +96,8 @@ export const Signin = ({ setToken }) => {
           </div>
 
           <p className="text-white text-center">Don't have an account?</p>
-          <Link to="/register" className="btn btn-info w-100 text-white">Register</Link>
+          <Link to="/signup" className="btn btn-info w-100 text-white">Register</Link>
+
         </div>
       </div>
     </div>
