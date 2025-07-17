@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth');
 const petRoutes = require('./routes/pets');
 const rescueRoutes = require('./routes/rescue');
 const contactRoutes = require('./routes/contact');
+const adoptionRoutes = require('./routes/adoptions'); // ✅ ADDED
 
 const { verifyToken } = require('./middleware/auth');
 
@@ -30,10 +31,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
-app.use('/api', authRoutes);                     // Public auth routes
-app.use('/api/contact', contactRoutes);          // Public contact route
-app.use('/api/pets', verifyToken, petRoutes);    // Protected pet routes
-app.use('/api/rescues', verifyToken, rescueRoutes); // Protected rescue routes
+app.use('/api', authRoutes);                         // Public auth routes
+app.use('/api/contact', contactRoutes);              // Public contact route
+app.use('/api/pets', verifyToken, petRoutes);        // Protected pet routes
+app.use('/api/rescues', verifyToken, rescueRoutes);  // Protected rescue routes
+app.use('/api/adoptions', adoptionRoutes);           // ✅ ADDED ROUTE
 
 // Global error handler
 app.use((err, req, res, next) => {

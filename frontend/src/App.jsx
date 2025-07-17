@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { jwtDecode } from 'jwt-decode'; // ✅ named import
+import { jwtDecode } from 'jwt-decode';
 
 import { Signup } from './components/auth/Signup';
 import { Signin } from './components/auth/Signin';
@@ -11,7 +11,7 @@ import Contact from './components/pages/Contact';
 import AdminDashboard from './components/dashboard/AdminDashboard';
 import Layout from './components/layout/Layout';
 import AdoptUs from './components/pages/AdoptUs';
-
+import AdoptionForm from './components/pages/AdoptionForm'; // ✅ added
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -62,6 +62,18 @@ const App = () => {
             <Layout setToken={setToken}>
               <AdoptUs />
             </Layout>
+          }
+        />
+
+        {/* ✅ NEW ADOPTION FORM ROUTE */}
+        <Route
+          path="/adopt/:petId"
+          element={
+            <ProtectedRoute>
+              <Layout setToken={setToken}>
+                <AdoptionForm />
+              </Layout>
+            </ProtectedRoute>
           }
         />
 

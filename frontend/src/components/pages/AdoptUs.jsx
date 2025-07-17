@@ -1,69 +1,126 @@
+// src/components/pages/AdoptUs.jsx
 import React, { useEffect, useState } from 'react';
 import api from '../../api/axios';
+import { Modal, Button, Container, Row, Col, Spinner, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const AdoptUs = () => {
   const [pets, setPets] = useState([]);
+  const [filteredPets, setFilteredPets] = useState([]);
+  const [selectedType, setSelectedType] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPet, setSelectedPet] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPets = async () => {
-      try {
-        const res = await api.get('/pets');
+    api.get('/pets')
+      .then(res => {
         setPets(res.data);
-      } catch (err) {
+        setFilteredPets(res.data);
+      })
+      .catch(err => {
         setError('Failed to load pets. Please try again.');
         console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPets();
+      })
+      .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (selectedType === 'all') setFilteredPets(pets);
+    else setFilteredPets(pets.filter(p => p.type === selectedType));
+  }, [selectedType, pets]);
+
+  const openModal = pet => {
+    setSelectedPet(pet);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedPet(null);
+    setShowModal(false);
+  };
 
   if (loading) {
     return (
       <div className="text-center mt-5">
-        <div className="spinner-border text-primary" role="status"></div>
-        <p>Loading pets for adoption...</p>
+        <Spinner animation="border" variant="primary" />
+        <p className="mt-2">Loading pets...</p>
       </div>
     );
   }
 
-  if (error) {
-    return <div className="alert alert-danger mt-4 text-center">{error}</div>;
-  }
+  if (error) return <div className="alert alert-danger mt-4 text-center">{error}</div>;
 
   return (
-    <div className="container my-5">
-      <h1 className="text-center mb-4 text-primary fw-bold">Adopt Us</h1>
-      <div className="row">
-        {pets.length === 0 ? (
-          <p className="text-center">No pets available for adoption right now.</p>
+    <Container className="my-5">
+      <h1 className="text-center mb-4 display-4">Adopt Us 🐾</h1>
+      <Form.Group as={Row} className="justify-content-end mb-4">
+        <Col xs="auto">
+          <Form.Select value={selectedType} onChange={e => setSelectedType(e.target.value)}>
+            <option value="all">All Animals</option>
+            <option value="dog">🐶 Dogs</option>
+            <option value="cat">🐱 Cats</option>
+          </Form.Select>
+        </Col>
+      </Form.Group>
+
+      <Row xs={1} md={3} className="g-4">
+        {filteredPets.length === 0 ? (
+          <Col><p className="text-center">No pets available at the moment.</p></Col>
         ) : (
-          pets.map((pet) => (
-            <div className="col-md-4 mb-4" key={pet._id}>
-              <div className="card h-100 shadow">
+          filteredPets.map(pet => (
+            <Col key={pet._id}>
+              <div className="card shadow-sm h-100 border-0">
                 <img
                   src={`http://localhost:5000/uploads/${pet.image}`}
-                  className="card-img-top"
                   alt={pet.name}
+                  className="card-img-top"
                   style={{ height: '250px', objectFit: 'cover' }}
                 />
-                <div className="card-body">
-                  <h5 className="card-title text-primary">{pet.name}</h5>
-                  <p className="card-text">
-                    <strong>Type:</strong> {pet.type} <br />
-                    <strong>Description:</strong> {pet.description}
+                <div className="card-body d-flex flex-column">
+                  <h5 className="card-title text-success">{pet.name}</h5>
+                  <p className="card-text flex-grow-1">
+                    <strong>Type:</strong> {pet.type}<br/>
+                    {pet.description.slice(0, 70)}...
                   </p>
+                  <Button variant="outline-primary" onClick={() => openModal(pet)}>
+                    View Details
+                  </Button>
                 </div>
               </div>
-            </div>
+            </Col>
           ))
         )}
-      </div>
-    </div>
+      </Row>
+
+      <Modal show={showModal} onHide={closeModal} centered size="lg">
+        {selectedPet && (
+          <>
+            <Modal.Header closeButton>
+              <Modal.Title>{selectedPet.name}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <img
+                src={`http://localhost:5000/uploads/${selectedPet.image}`}
+                alt={selectedPet.name}
+                className="img-fluid mb-3 rounded"
+                style={{ maxHeight: '300px', objectFit: 'cover' }}
+              />
+              <p><strong>Type:</strong> {selectedPet.type}</p>
+              <p><strong>Description:</strong> {selectedPet.description}</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closeModal}>Close</Button>
+              <Button variant="success" onClick={() => navigate(`/adopt/${selectedPet._id}`)}>
+                🐾 Adopt Me
+              </Button>
+            </Modal.Footer>
+          </>
+        )}
+      </Modal>
+    </Container>
   );
 };
 
