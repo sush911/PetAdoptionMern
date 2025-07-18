@@ -85,10 +85,12 @@ const Layout = ({ children, setToken, pageStyle = {} }) => {
 
 // === Default page layout styles ===
 const mainWrapperStyle = {
-  backgroundColor: '#1e293b',
-  color: '#e2e8f0',
   minHeight: '100vh',
-  fontSize: '1.3rem',
+  fontSize: '1.2rem',
+  display: 'flex',
+  justifyContent: 'center',
+  padding: 0, // Remove padding
+  backgroundColor: 'transparent', // Let pages decide their background
 };
 
 export default Layout;

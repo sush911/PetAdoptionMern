@@ -1,45 +1,32 @@
 import React from 'react';
+import { Container, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import '../../styles/Home.css'; 
 
 const Home = () => {
-  const imageCount = 6;
-  const petImages = Array.from({ length: imageCount }, (_, i) => `/assets/${i + 1}.jpg`);
+  const navigate = useNavigate();
 
   return (
-    <div className="container my-5">
-      {/* Header */}
-      <h1 className="text-primary fw-bold mb-3">Welcome to Pet Adoption!</h1>
-      <p className="lead text-secondary mb-4">
-        Explore and adopt your new furry friend.
-      </p>
-
-      {/* Pet cards */}
-      <div className="row g-3">
-        {petImages.map((img, idx) => (
-          <div key={idx} className="col-sm-6 col-md-4">
-            <div className="card shadow-sm pet-card-hover">
-              <img
-                src={img}
-                className="card-img-top rounded"
-                alt={`Pet ${idx + 1}`}
-                style={{ height: '220px', objectFit: 'cover' }}
-              />
-              <div className="card-body text-center">
-                <p className="card-text fw-semibold mb-0">Pet {idx + 1}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Hover effect */}
-      <style>{`
-        .pet-card-hover:hover {
-          transform: scale(1.05);
-          transition: transform 0.3s ease;
-          box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
-          cursor: pointer;
-        }
-      `}</style>
+    <div className="home-hero-section d-flex align-items-center justify-content-center text-center">
+      <Container>
+        <h1 className="display-2 fw-bold text-white animate__animated animate__fadeInDown">
+          Welcome to PetForPat 🐾
+        </h1>
+        <p className="lead text-white mt-4 fs-4 animate__animated animate__fadeInUp">
+          PetForPat is Nepal’s trusted pet adoption platform — where furry friends find loving homes.
+        </p>
+        <p className="text-light fs-5 mb-4 animate__animated animate__fadeInUp">
+          Whether you're looking to adopt, rescue, or simply learn more — we’re here to connect hearts with paws.
+        </p>
+        <Button
+          variant="info"
+          size="lg"
+          className="text-white fw-semibold px-5 py-2 shadow animate__animated animate__zoomIn"
+          onClick={() => navigate('/adopt')}
+        >
+          🐶 Explore Adoptions
+        </Button>
+      </Container>
     </div>
   );
 };

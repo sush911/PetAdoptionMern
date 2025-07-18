@@ -13,6 +13,9 @@ import AdminDashboard from './components/dashboard/AdminDashboard';
 import Layout from './components/layout/Layout';
 import AdoptUs from './components/pages/AdoptUs';
 import AdoptionForm from './components/pages/AdoptionForm';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'animate.css/animate.min.css';
+
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -50,7 +53,7 @@ const App = () => {
           path="/home"
           element={
             <ProtectedRoute>
-              <Layout setToken={setToken} pageStyle={{ backgroundColor: '#e5d7a4ff', color: '#1e293b' }}>
+              <Layout setToken={setToken} pageStyle={{ backgroundColor: '#e5d7a4ff', color: '#1e293b' }} >
                 <Home />
               </Layout>
             </ProtectedRoute>
