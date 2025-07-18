@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,7 +12,7 @@ import Contact from './components/pages/Contact';
 import AdminDashboard from './components/dashboard/AdminDashboard';
 import Layout from './components/layout/Layout';
 import AdoptUs from './components/pages/AdoptUs';
-import AdoptionForm from './components/pages/AdoptionForm'; // ✅ added
+import AdoptionForm from './components/pages/AdoptionForm';
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -49,7 +50,7 @@ const App = () => {
           path="/home"
           element={
             <ProtectedRoute>
-              <Layout setToken={setToken}>
+              <Layout setToken={setToken} pageStyle={{ backgroundColor: '#e5d7a4ff', color: '#1e293b' }}>
                 <Home />
               </Layout>
             </ProtectedRoute>
@@ -59,18 +60,17 @@ const App = () => {
         <Route
           path="/adopt"
           element={
-            <Layout setToken={setToken}>
+            <Layout setToken={setToken} pageStyle={{ backgroundColor: '#e0f2fe', color: '#0f172a' }}>
               <AdoptUs />
             </Layout>
           }
         />
 
-        {/* ✅ NEW ADOPTION FORM ROUTE */}
         <Route
           path="/adopt/:petId"
           element={
             <ProtectedRoute>
-              <Layout setToken={setToken}>
+              <Layout setToken={setToken} pageStyle={{ backgroundColor: '#f0fdf4', color: '#064e3b' }}>
                 <AdoptionForm />
               </Layout>
             </ProtectedRoute>
@@ -81,7 +81,7 @@ const App = () => {
           path="/rescue"
           element={
             <ProtectedRoute>
-              <Layout setToken={setToken}>
+              <Layout setToken={setToken} pageStyle={{ backgroundColor: '#fef2f2', color: '#991b1b' }}>
                 <RescueForm />
               </Layout>
             </ProtectedRoute>
@@ -92,7 +92,7 @@ const App = () => {
           path="/contact"
           element={
             <ProtectedRoute>
-              <Layout setToken={setToken}>
+              <Layout setToken={setToken} pageStyle={{ backgroundColor: '#1e293b', color: '#0c4a6e' }}>
                 <Contact />
               </Layout>
             </ProtectedRoute>
@@ -103,7 +103,7 @@ const App = () => {
           path="/admin"
           element={
             <AdminRoute>
-              <Layout setToken={setToken}>
+              <Layout setToken={setToken} pageStyle={{ backgroundColor: '#dbc41063', color: '#0f172a' }}>
                 <AdminDashboard />
               </Layout>
             </AdminRoute>

@@ -1,0 +1,9 @@
+/* src/styles/PetForm.css */
+input, select, textarea {
+  font-size: 1.1rem;
+}
+
+label {
+  font-weight: 600;
+  color: #343a40;
+}

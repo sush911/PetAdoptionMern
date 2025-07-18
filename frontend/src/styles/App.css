@@ -1,4 +1,9 @@
+/* ✅ Global font */
+body {
+  font-family: 'Poppins', sans-serif;
+}
 
+/* ✅ Root container */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -6,6 +11,7 @@
   text-align: center;
 }
 
+/* ✅ Logo animation */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -34,10 +40,38 @@
   }
 }
 
+/* ✅ Card styling */
 .card {
   padding: 2em;
 }
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.card-text {
+  font-size: 1rem;
+}
 
+/* ✅ Pet card hover effects */
+.pet-card:hover {
+  transform: translateY(-5px);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.pet-card .card-title {
+  color: #007bff;
+}
+.pet-card .card-text {
+  color: #333;
+}
+
+/* ✅ Modal scroll behavior for long content */
+.modal-body {
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+/* ✅ Read-the-docs placeholder */
 .read-the-docs {
   color: #888;
 }

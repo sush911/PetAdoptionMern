@@ -1,40 +1,39 @@
+/* Ensure the full height of viewport is used */
 html, body, #root {
   height: 100vh;
   margin: 0;
   padding: 0;
 }
 
-body {
-  background-color: #151424;
-}
-/* Ensure the root container fills the viewport */
+/* Root container settings */
 #root {
-  display: block; /* Remove flex centering from body */
+  display: block;
   min-height: 100vh;
 }
 
-/* Remove flex centering from body to let components control layout */
+/* Body - Updated for light theme */
 body {
+  font-family: 'Segoe UI', 'Roboto', 'Open Sans', sans-serif;
+  font-size: 1.2rem;
+  background-color: #f8fafc;
   margin: 0;
   padding: 0;
-  background-color: #151424; /* Match Signup/Signin background */
   min-height: 100vh;
 }
 
-/* Override default object-fit-cover if needed */
+/* Global object-fit helper */
 .object-fit-cover {
   object-fit: cover;
 }
 
-/* Root styles for typography and color scheme */
+/* Typography and root color scheme */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: rgba(33, 53, 71, 1); /* Light theme color override */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -52,7 +51,7 @@ a:hover {
   color: #535bf2;
 }
 
-/* Button styles (optional, can be removed if Bootstrap handles this) */
+/* Button styles */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -60,7 +59,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #f9f9f9;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -72,63 +71,46 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Light theme adjustments */
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
-/* Ensure Bootstrap container-fluid takes full width */
+/* Bootstrap container fix */
 .container-fluid {
   padding: 0;
   width: 100%;
 }
 
-/* Fix row to stretch vertically */
+/* Row stretching fix */
 .row {
   margin: 0;
   height: 100%;
 }
 
-/* ===== RescueForm dark styles ===== */
-
+/* ===== RescueForm light styles (adapted from dark) ===== */
 .dark-form-container {
-  background-color: #222; /* dark background */
-  color: #eee; /* light text */
+  background-color: #ffffff;
+  color: #213547;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.7);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   max-width: 600px;
   margin: 2rem auto;
 }
 
-/* Style inputs and textarea for dark mode */
 .dark-form-container input,
 .dark-form-container textarea,
 .dark-form-container select {
-  background-color: #333;
-  border: 1px solid #555;
-  color: #eee;
+  background-color: #f0f2f5;
+  border: 1px solid #ccc;
+  color: #213547;
 }
 
 .dark-form-container input::placeholder,
 .dark-form-container textarea::placeholder {
-  color: #bbb;
+  color: #888;
 }
 
 .dark-form-container label {
-  color: #ccc;
+  color: #555;
 }
 
-/* Button style */
 .dark-form-container button {
   background-color: #646cff;
   color: white;
@@ -142,3 +124,5 @@ button:focus-visible {
 .dark-form-container button:hover {
   background-color: #535bf2;
 }
+
+/* Optional: remove light/dark mode media queries if not using them */

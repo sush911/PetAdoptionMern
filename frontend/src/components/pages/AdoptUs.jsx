@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api/axios';
 import { Modal, Button, Container, Row, Col, Spinner, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/AdoptUs.css';
+  
 
 const AdoptUs = () => {
   const [pets, setPets] = useState([]);
@@ -55,10 +57,13 @@ const AdoptUs = () => {
 
   return (
     <Container className="my-5">
-      <h1 className="text-center mb-4 display-4">Adopt Us 🐾</h1>
+      <h1 className="text-center mb-4 display-4 text-info fw-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>
+        🐾 Find Your New Best Friend 🐶🐱
+      </h1>
+
       <Form.Group as={Row} className="justify-content-end mb-4">
         <Col xs="auto">
-          <Form.Select value={selectedType} onChange={e => setSelectedType(e.target.value)}>
+          <Form.Select value={selectedType} onChange={e => setSelectedType(e.target.value)} className="shadow-sm">
             <option value="all">All Animals</option>
             <option value="dog">🐶 Dogs</option>
             <option value="cat">🐱 Cats</option>
@@ -66,26 +71,33 @@ const AdoptUs = () => {
         </Col>
       </Form.Group>
 
-      <Row xs={1} md={3} className="g-4">
+      <Row xs={1} md={2} lg={3} className="g-4">
         {filteredPets.length === 0 ? (
           <Col><p className="text-center">No pets available at the moment.</p></Col>
         ) : (
           filteredPets.map(pet => (
             <Col key={pet._id}>
-              <div className="card shadow-sm h-100 border-0">
+              <div className="card pet-card shadow-lg h-100 border-0 rounded-4 bg-light">
                 <img
                   src={`http://localhost:5000/uploads/${pet.image}`}
                   alt={pet.name}
-                  className="card-img-top"
-                  style={{ height: '250px', objectFit: 'cover' }}
+                  className="card-img-top rounded-top-4"
+                  style={{
+                    height: '280px',
+                    width: '100%',
+                    objectFit: 'cover',
+                    borderTopLeftRadius: '1rem',
+                    borderTopRightRadius: '1rem'
+                  }}
                 />
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title text-success">{pet.name}</h5>
-                  <p className="card-text flex-grow-1">
-                    <strong>Type:</strong> {pet.type}<br/>
-                    {pet.description.slice(0, 70)}...
+                <div className="card-body d-flex flex-column p-4">
+                  <h4 className="card-title text-primary fw-bold text-uppercase">{pet.name}</h4>
+                  <p className="card-text text-dark flex-grow-1">
+                    <strong>Type:</strong> {pet.type}<br />
+                    <strong>Age:</strong> {pet.age || 'Unknown'}<br />
+                    <span className="text-muted">{pet.description.slice(0, 70)}...</span>
                   </p>
-                  <Button variant="outline-primary" onClick={() => openModal(pet)}>
+                  <Button variant="outline-info" onClick={() => openModal(pet)} className="mt-auto fw-semibold">
                     View Details
                   </Button>
                 </div>
@@ -99,16 +111,23 @@ const AdoptUs = () => {
         {selectedPet && (
           <>
             <Modal.Header closeButton>
-              <Modal.Title>{selectedPet.name}</Modal.Title>
+              <Modal.Title className="fw-bold text-info text-uppercase fs-3">{selectedPet.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <img
                 src={`http://localhost:5000/uploads/${selectedPet.image}`}
                 alt={selectedPet.name}
-                className="img-fluid mb-3 rounded"
-                style={{ maxHeight: '300px', objectFit: 'cover' }}
+                className="img-fluid rounded shadow-sm mx-auto d-block mb-3"
+                style={{
+                  maxHeight: '350px',
+                  width: '100%',
+                  objectFit: 'contain',
+                  backgroundColor: '#f1f5f9',
+                  borderRadius: '12px'
+                }}
               />
               <p><strong>Type:</strong> {selectedPet.type}</p>
+              <p><strong>Age:</strong> {selectedPet.age || 'Unknown'}</p>
               <p><strong>Description:</strong> {selectedPet.description}</p>
             </Modal.Body>
             <Modal.Footer>

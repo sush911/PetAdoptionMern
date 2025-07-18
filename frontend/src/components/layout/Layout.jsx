@@ -1,8 +1,10 @@
+// src/components/layout/Layout.jsx
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 
-const Layout = ({ children, setToken }) => {
+const Layout = ({ children, setToken, pageStyle = {} }) => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -27,95 +29,66 @@ const Layout = ({ children, setToken }) => {
 
   return (
     <>
-      <nav style={navStyle}>
-        <div style={logoContainerStyle}>
-          <img src="/assets/petlogo.png" alt="Pet Logo" style={logoImgStyle} />
-          <NavLink to="/home" style={logoTextStyle}>PetForPat</NavLink>
-        </div>
+      <Navbar
+        bg="dark"
+        variant="dark"
+        expand="lg"
+        sticky="top"
+        className="shadow-lg py-4 px-4"
+        style={{ fontSize: '1.2rem' }}
+      >
+        <Container fluid className="d-flex justify-content-between align-items-center">
+          <Navbar.Brand as={NavLink} to="/home" className="d-flex align-items-center gap-3">
+            <img
+              src="/assets/logoweb.png"
+              alt="Pet Logo"
+              height="70"
+              width="70"
+              style={{ borderRadius: '50%', objectFit: 'cover' }}
+            />
+            <span className="fw-bold fs-2 text-info">PetForPat</span>
+          </Navbar.Brand>
 
-        <div style={navLinksStyle}>
-          <NavLink to="/home" style={navLinkStyle}>Home</NavLink>
-          <NavLink to="/adopt" style={navLinkStyle}>Adopt Us</NavLink>
-          <NavLink to="/rescue" style={navLinkStyle}>Report Rescue</NavLink>
-          {isAdmin && <NavLink to="/admin" style={navLinkStyle}>Admin</NavLink>}
-          <NavLink to="/contact" style={navLinkStyle}>Contact</NavLink>
-          <button onClick={handleLogout} style={logoutBtnStyle}>Logout</button>
-        </div>
-      </nav>
+          <Navbar.Toggle aria-controls="main-navbar-nav" />
+          <Navbar.Collapse id="main-navbar-nav" className="justify-content-end">
+            <Nav className="gap-4 align-items-center">
+              <Nav.Link as={NavLink} to="/home" className="fs-5 px-3">Home</Nav.Link>
+              <Nav.Link as={NavLink} to="/adopt" className="fs-5 px-3">Adopt Us</Nav.Link>
+              <Nav.Link as={NavLink} to="/rescue" className="fs-5 px-3">Report Rescue</Nav.Link>
+              {isAdmin && <Nav.Link as={NavLink} to="/admin" className="fs-5 px-3">Admin</Nav.Link>}
+              <Nav.Link as={NavLink} to="/contact" className="fs-5 px-3">Contact</Nav.Link>
+              <Button
+                variant="danger"
+                onClick={handleLogout}
+                className="px-4 py-2 fs-6 ms-3"
+              >
+                Logout
+              </Button>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
-      <main style={mainWrapperStyle}>
-        {children}
+      <main
+        style={{
+          ...mainWrapperStyle,
+          ...pageStyle,
+        }}
+      >
+        <Container fluid className="py-5 px-4" style={{ maxWidth: '1440px' }}>
+          {children}
+        </Container>
       </main>
     </>
   );
 };
 
-// === Styles ===
-
-const navStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  backgroundColor: '#0f172a',
-  padding: '1.5rem 3rem',
-  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.6)',
-  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-};
-
-const logoContainerStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '1rem',
-};
-
-const logoImgStyle = {
-  height: '60px',
-  width: '60px',
-  objectFit: 'contain',
-  borderRadius: '50%',
-};
-
-const logoTextStyle = {
-  color: '#38bdf8',
-  fontSize: '2.3rem',
-  fontWeight: '900',
-  textDecoration: 'none',
-  letterSpacing: '2px',
-};
-
-const navLinksStyle = {
-  display: 'flex',
-  gap: '3rem',
-  alignItems: 'center',
-};
-
-const navLinkStyle = ({ isActive }) => ({
-  color: isActive ? '#38bdf8' : '#f1f5f9',
-  fontSize: '1.5rem',
-  textDecoration: 'none',
-  fontWeight: '600',
-  transition: 'color 0.3s ease',
-});
-
-const logoutBtnStyle = {
-  backgroundColor: '#ef4444',
-  border: 'none',
-  padding: '0.8rem 1.5rem',
-  borderRadius: '8px',
-  color: '#fff',
-  cursor: 'pointer',
-  fontWeight: '600',
-  fontSize: '1.3rem',
-  marginLeft: '2rem',
-  transition: 'background-color 0.3s ease',
-};
-
+// === Default page layout styles ===
 const mainWrapperStyle = {
-  padding: '3rem 4rem',
   backgroundColor: '#1e293b',
   color: '#e2e8f0',
   minHeight: '100vh',
-  fontSize: '1.2rem',
+  fontSize: '1.3rem',
 };
 
 export default Layout;

@@ -1,6 +1,7 @@
 // src/components/pets/PetForm.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
+import '../../styles/PetForm.css'; // Optional external CSS if needed
 
 const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
   const [formData, setFormData] = useState({
@@ -14,26 +15,24 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Populate form if editing
   useEffect(() => {
     if (existingPet) {
       setFormData({
         name: existingPet.name || '',
-        type: existingPet.type || 'dog',
+        type: existingPet.type?.toLowerCase() || 'dog',
         age: existingPet.age || '',
         description: existingPet.description || '',
-        image: null, // we don’t pre-load file input
+        image: null,
       });
     }
   }, [existingPet]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'image') {
-      setFormData({ ...formData, image: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({
+      ...formData,
+      [name]: name === 'image' ? files[0] : value,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -43,14 +42,11 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
 
     try {
       const data = new FormData();
-      Object.keys(formData).forEach((key) => {
+      for (let key in formData) {
         if (formData[key] !== null) data.append(key, formData[key]);
-      });
+      }
 
-      const endpoint = existingPet
-        ? `/pets/${existingPet._id}`
-        : '/pets';
-
+      const endpoint = existingPet ? `/pets/${existingPet._id}` : '/pets';
       const method = existingPet ? 'put' : 'post';
 
       const res = await api[method](endpoint, data, {
@@ -59,15 +55,7 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
 
       onPetAdded(res.data);
 
-      // Reset form
-      setFormData({
-        name: '',
-        type: 'dog',
-        age: '',
-        description: '',
-        image: null,
-      });
-
+      setFormData({ name: '', type: 'dog', age: '', description: '', image: null });
       e.target.reset();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to save pet');
@@ -77,28 +65,30 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
   };
 
   return (
-    <div className="card shadow-sm p-4 mb-4">
-      <h4 className="mb-3 text-success">{existingPet ? 'Edit Pet' : 'Add New Pet'}</h4>
+    <div className="card shadow p-5 rounded-4 border-0 bg-light mb-5">
+      <h3 className="mb-4 fw-bold text-success">{existingPet ? '✏️ Edit Pet' : '➕ Add New Pet'}</h3>
+
       {error && <div className="alert alert-danger">{error}</div>}
 
       <form onSubmit={handleSubmit}>
-        <div className="row g-3 mb-3">
+        <div className="row g-4 mb-4">
           <div className="col-md-6">
-            <label className="form-label">Name</label>
+            <label className="form-label fw-semibold fs-5">🐾 Name</label>
             <input
               type="text"
               name="name"
               required
-              className="form-control"
+              className="form-control form-control-lg"
               value={formData.name}
               onChange={handleChange}
             />
           </div>
+
           <div className="col-md-6">
-            <label className="form-label">Type</label>
+            <label className="form-label fw-semibold fs-5">🐶 Type</label>
             <select
               name="type"
-              className="form-select"
+              className="form-select form-select-lg"
               value={formData.type}
               onChange={handleChange}
             >
@@ -108,48 +98,53 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
           </div>
         </div>
 
-        <div className="row g-3 mb-3">
+        <div className="row g-4 mb-4">
           <div className="col-md-6">
-            <label className="form-label">Age</label>
+            <label className="form-label fw-semibold fs-5">📅 Age</label>
             <input
               type="number"
               name="age"
               required
-              className="form-control"
+              className="form-control form-control-lg"
               value={formData.age}
               onChange={handleChange}
             />
           </div>
+
           <div className="col-md-6">
-            <label className="form-label">Image</label>
+            <label className="form-label fw-semibold fs-5">📷 Image</label>
             <input
               type="file"
               name="image"
-              className="form-control"
+              className="form-control form-control-lg"
               onChange={handleChange}
               accept="image/*"
             />
           </div>
         </div>
 
-        <div className="mb-3">
-          <label className="form-label">Description</label>
+        <div className="mb-4">
+          <label className="form-label fw-semibold fs-5">📝 Description</label>
           <textarea
             name="description"
-            rows="3"
+            rows="4"
             required
-            className="form-control"
+            className="form-control form-control-lg"
             value={formData.description}
             onChange={handleChange}
-          ></textarea>
+          />
         </div>
 
-        <div className="d-flex gap-2">
-          <button className="btn btn-success" type="submit" disabled={loading}>
+        <div className="d-flex gap-3">
+          <button className="btn btn-lg btn-success px-4" type="submit" disabled={loading}>
             {loading ? 'Saving...' : existingPet ? 'Update Pet' : 'Add Pet'}
           </button>
           {existingPet && (
-            <button type="button" className="btn btn-secondary" onClick={onCancelEdit}>
+            <button
+              type="button"
+              className="btn btn-lg btn-outline-secondary px-4"
+              onClick={onCancelEdit}
+            >
               Cancel
             </button>
           )}
