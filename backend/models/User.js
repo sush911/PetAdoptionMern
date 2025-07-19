@@ -4,27 +4,35 @@ const bcrypt = require('bcryptjs');
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: false, // <== ✅ make optional for Google login users
   },
   role: {
     type: String,
     enum: ['user', 'admin'],
-    default: 'user' // default role is 'user'
-  }
+    default: 'user',
+  },
+  provider: {
+    type: String,
+    enum: ['local', 'google'],
+    default: 'local', // <== 'local' for normal users, 'google' for Google OAuth
+  },
+  avatar: {
+    type: String, // ✅ to store Google profile picture
+  },
 });
 
-// Hash password before saving
+// Only hash password if it's a local signup
 UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next(); 
+  if (!this.isModified('password') || !this.password) return next(); 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();

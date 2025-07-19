@@ -8,11 +8,13 @@ const authRoutes = require('./routes/auth');
 const petRoutes = require('./routes/pets');
 const rescueRoutes = require('./routes/rescue');
 const contactRoutes = require('./routes/contact');
-const adoptionRoutes = require('./routes/adoptions'); // ✅ ADDED
+const adoptionRoutes = require('./routes/adoptions'); 
 
 const { verifyToken } = require('./middleware/auth');
 
 const app = express();
+
+const googleAuthRoute = require('./routes/googleAuth');
 
 // Connect to MongoDB only if NOT in test environment
 if (process.env.NODE_ENV !== 'test') {
@@ -50,5 +52,8 @@ if (require.main === module) {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
   });
 }
+
+app.use(express.json());
+app.use('/api/auth/google', googleAuthRoute);
 
 module.exports = app;

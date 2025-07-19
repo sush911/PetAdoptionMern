@@ -3,6 +3,12 @@ html, body, #root {
   height: 100vh;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+/* Apply box-sizing globally */
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 /* Root container settings */
@@ -124,5 +130,3 @@ button:focus-visible {
 .dark-form-container button:hover {
   background-color: #535bf2;
 }
-
-/* Optional: remove light/dark mode media queries if not using them */

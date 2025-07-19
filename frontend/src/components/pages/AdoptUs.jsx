@@ -1,10 +1,8 @@
-// src/components/pages/AdoptUs.jsx
 import React, { useEffect, useState } from 'react';
 import api from '../../api/axios';
 import { Modal, Button, Container, Row, Col, Spinner, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/AdoptUs.css';
-  
 
 const AdoptUs = () => {
   const [pets, setPets] = useState([]);
@@ -17,7 +15,13 @@ const AdoptUs = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get('/pets')
+    const token = localStorage.getItem('token');
+
+    api.get('/pets', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(res => {
         setPets(res.data);
         setFilteredPets(res.data);
