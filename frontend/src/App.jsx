@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,6 +5,9 @@ import { jwtDecode } from 'jwt-decode';
 
 import { Signup } from './components/auth/Signup';
 import { Signin } from './components/auth/Signin';
+import ForgotPassword from './components/auth/ForgetPassword'; // ✅ Add this line
+import ResetPassword from './components/auth/ResetPassword';
+
 import Home from './components/home/Home';
 import RescueForm from './components/rescue/RescueForm';
 import Contact from './components/pages/Contact';
@@ -13,9 +15,9 @@ import AdminDashboard from './components/dashboard/AdminDashboard';
 import Layout from './components/layout/Layout';
 import AdoptUs from './components/pages/AdoptUs';
 import AdoptionForm from './components/pages/AdoptionForm';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'animate.css/animate.min.css';
-
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -48,6 +50,8 @@ const App = () => {
         <Route path="/" element={token ? <Navigate to="/home" /> : <Navigate to="/login" />} />
         <Route path="/signup" element={<Signup setToken={setToken} />} />
         <Route path="/login" element={<Signin setToken={setToken} />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} /> {/* ✅ Now works */}
+        <Route path="/reset-password/:token" element={<ResetPassword />} /> {/* ✅ Route for reset */}
 
         <Route
           path="/home"

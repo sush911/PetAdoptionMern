@@ -5,6 +5,7 @@ const path = require('path');
 const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/auth');
+const passwordRoutes = require('./routes/password');
 const petRoutes = require('./routes/pets');
 const rescueRoutes = require('./routes/rescue');
 const contactRoutes = require('./routes/contact');
@@ -34,6 +35,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api', authRoutes);                         // Public auth routes
+app.use('/api/auth', passwordRoutes); 
 app.use('/api/contact', contactRoutes);              // Public contact route
 app.use('/api/pets', verifyToken, petRoutes);        // Protected pet routes
 app.use('/api/rescues', verifyToken, rescueRoutes);  // Protected rescue routes
