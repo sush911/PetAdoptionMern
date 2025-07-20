@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 
 import { Signup } from './components/auth/Signup';
 import { Signin } from './components/auth/Signin';
-import ForgotPassword from './components/auth/ForgetPassword'; // ✅ Add this line
+import ForgotPassword from './components/auth/ForgetPassword';
 import ResetPassword from './components/auth/ResetPassword';
 
 import Home from './components/home/Home';
@@ -15,6 +15,7 @@ import AdminDashboard from './components/dashboard/AdminDashboard';
 import Layout from './components/layout/Layout';
 import AdoptUs from './components/pages/AdoptUs';
 import AdoptionForm from './components/pages/AdoptionForm';
+import About from './components/pages/About'; // ✅ Import About page
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'animate.css/animate.min.css';
@@ -50,8 +51,8 @@ const App = () => {
         <Route path="/" element={token ? <Navigate to="/home" /> : <Navigate to="/login" />} />
         <Route path="/signup" element={<Signup setToken={setToken} />} />
         <Route path="/login" element={<Signin setToken={setToken} />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} /> {/* ✅ Now works */}
-        <Route path="/reset-password/:token" element={<ResetPassword />} /> {/* ✅ Route for reset */}
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         <Route
           path="/home"
@@ -101,6 +102,17 @@ const App = () => {
             <ProtectedRoute>
               <Layout setToken={setToken} pageStyle={{ backgroundColor: '#1e293b', color: '#0c4a6e' }}>
                 <Contact />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/about"
+          element={
+            <ProtectedRoute>
+              <Layout setToken={setToken} pageStyle={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                <About />
               </Layout>
             </ProtectedRoute>
           }

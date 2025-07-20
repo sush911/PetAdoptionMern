@@ -55,6 +55,7 @@ const Layout = ({ children, setToken, pageStyle = {} }) => {
               <Nav.Link as={NavLink} to="/home" className="fs-5 px-3">Home</Nav.Link>
               <Nav.Link as={NavLink} to="/adopt" className="fs-5 px-3">Adopt Us</Nav.Link>
               <Nav.Link as={NavLink} to="/rescue" className="fs-5 px-3">Report Rescue</Nav.Link>
+              <Nav.Link as={NavLink} to="/about" className="fs-5 px-3">About</Nav.Link> {/* ✅ Added */}
               {isAdmin && <Nav.Link as={NavLink} to="/admin" className="fs-5 px-3">Admin</Nav.Link>}
               <Nav.Link as={NavLink} to="/contact" className="fs-5 px-3">Contact</Nav.Link>
               <Button
@@ -89,8 +90,8 @@ const mainWrapperStyle = {
   fontSize: '1.2rem',
   display: 'flex',
   justifyContent: 'center',
-  padding: 0, // Remove padding
-  backgroundColor: 'transparent', // Let pages decide their background
+  padding: 0,
+  backgroundColor: 'transparent',
 };
 
 export default Layout;

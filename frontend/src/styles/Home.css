@@ -1,33 +1,70 @@
-/* src/styles/Home.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
 
 .home-hero-section {
-  background-image: url('/assets/7.jpg');
+  background: url('/assets/7.jpg') no-repeat center center;
   background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   height: 100vh;
   width: 100%;
   position: relative;
-  z-index: 1;
+  font-family: 'Poppins', sans-serif;
+}
+
+.glass-overlay {
+  background-color: rgba(0, 0, 0, 0.3); /* reduced opacity for better image visibility */
+  backdrop-filter: blur(3px);          /* less blurry */
+  -webkit-backdrop-filter: blur(3px);
+  height: 100%;
+  width: 100%;
+  padding: 4rem 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  margin: 0;
+  overflow: auto;
 }
 
-.home-hero-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+.feature-card {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 2rem;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(2px);
+  min-height: 220px;
   height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 }
 
-.home-hero-section .container {
-  z-index: 2;
-  position: relative;
+.feature-card:hover {
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.feature-icon {
+  font-size: 3.5rem;
+  color: #ffc107;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .display-1 {
+    font-size: 2.5rem;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+  }
+
+  .feature-card {
+    min-height: 180px;
+  }
 }

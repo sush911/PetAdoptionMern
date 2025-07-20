@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import api from '../../api/axios';
 import PetForm from '../pets/PetForm';
 import Unauthorized from '../pages/Unauthorized';
+import '../../styles/EnhancedDashboard.css'; // Make sure to import your enhanced CSS
 
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(null);
@@ -117,7 +118,7 @@ const AdminDashboard = () => {
     return (
       <div className="text-center my-5">
         <div className="spinner-border text-success" role="status"></div>
-        <p>Checking permissions...</p>
+        <p className="fs-4 mt-3">Checking permissions...</p>
       </div>
     );
   }
@@ -125,7 +126,7 @@ const AdminDashboard = () => {
   if (!isAdmin) {
     return (
       <div className="container my-4">
-        <h1 className="mb-4 text-success fw-bold">Admin Dashboard</h1>
+        <h1 className="dashboard-title">Admin Dashboard</h1>
         <Unauthorized />
       </div>
     );
@@ -135,7 +136,7 @@ const AdminDashboard = () => {
     return (
       <div className="text-center my-5">
         <div className="spinner-border text-success" role="status"></div>
-        <p>Loading dashboard...</p>
+        <p className="fs-4 mt-3">Loading dashboard...</p>
       </div>
     );
   }
@@ -146,14 +147,14 @@ const AdminDashboard = () => {
 
   return (
     <div className="container my-5">
-      <h1 className="mb-4 text-success fw-bold display-5">
+      <h1 className="dashboard-title mb-4">
         <i className="bi bi-speedometer2 me-2"></i>Admin Dashboard
       </h1>
 
       <PetForm onPetAdded={handlePetAddedOrUpdated} existingPet={editingPet} onCancelEdit={cancelEdit} />
 
-      {/* Manage Pets */}
-      <section className="bg-light p-4 shadow-sm rounded my-5">
+      {/* Pets Section */}
+      <section className="section-card my-5">
         <h3 className="text-success mb-4"><i className="bi bi-paw me-2"></i>Manage Pets</h3>
         <div className="table-responsive">
           <table className="table table-hover align-middle">
@@ -173,13 +174,12 @@ const AdminDashboard = () => {
                     <img
                       src={`http://localhost:5000/uploads/${pet.image}`}
                       alt={pet.name}
-                      className="rounded"
+                      className="rounded object-fit-cover"
                       width="60"
                       height="60"
-                      style={{ objectFit: 'cover' }}
                     />
                   </td>
-                  <td><span className="fw-semibold">{pet.name}</span></td>
+                  <td className="fw-semibold">{pet.name}</td>
                   <td>
                     <span className="badge bg-secondary">
                       {pet.type?.toLowerCase() === 'dog' ? '🐶 Dog' :
@@ -202,8 +202,8 @@ const AdminDashboard = () => {
         </div>
       </section>
 
-      {/* Manage Rescues */}
-      <section className="bg-light p-4 shadow-sm rounded my-5">
+      {/* Rescues Section */}
+      <section className="section-card my-5">
         <h3 className="text-warning mb-4"><i className="bi bi-life-preserver me-2"></i>Manage Rescue Requests</h3>
         {rescues.length === 0 ? (
           <p className="text-muted">No rescue requests found.</p>
@@ -241,8 +241,8 @@ const AdminDashboard = () => {
         )}
       </section>
 
-      {/* Manage Contacts */}
-      <section className="bg-light p-4 shadow-sm rounded my-5">
+      {/* Contacts Section */}
+      <section className="section-card my-5">
         <h3 className="text-info mb-4"><i className="bi bi-envelope-paper me-2"></i>Manage Contact Messages</h3>
         {contacts.length === 0 ? (
           <p className="text-muted">No messages found.</p>
@@ -278,12 +278,9 @@ const AdminDashboard = () => {
         )}
       </section>
 
-      {/* Manage Adoptions */}
-      <section className="bg-light p-4 shadow-sm rounded my-5">
-        <h3 className="text-primary mb-4">
-          <i className="bi bi-heart-pulse me-2"></i>Manage Adoptions
-        </h3>
-
+      {/* Adoptions Section */}
+      <section className="section-card my-5">
+        <h3 className="text-primary mb-4"><i className="bi bi-heart-pulse me-2"></i>Manage Adoptions</h3>
         {adoptions.length === 0 ? (
           <p className="text-muted">No adoption requests found.</p>
         ) : (
@@ -316,20 +313,15 @@ const AdminDashboard = () => {
                     <td>
                       {a.status === 'pending' && (
                         <>
-                          <button className="btn btn-outline-success btn-sm me-2"
-                            onClick={() => handleUpdateStatus(a._id, 'approved')}>
+                          <button className="btn btn-outline-success btn-sm me-2" onClick={() => handleUpdateStatus(a._id, 'approved')}>
                             ✅ Approve
                           </button>
-                          <button className="btn btn-outline-danger btn-sm me-2"
-                            onClick={() => handleUpdateStatus(a._id, 'rejected')}>
+                          <button className="btn btn-outline-danger btn-sm me-2" onClick={() => handleUpdateStatus(a._id, 'rejected')}>
                             ❌ Reject
                           </button>
                         </>
                       )}
-                      <button
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() => handleDeleteAdoption(a._id)}
-                      >
+                      <button className="btn btn-outline-danger btn-sm" onClick={() => handleDeleteAdoption(a._id)}>
                         🗑 Delete
                       </button>
                     </td>

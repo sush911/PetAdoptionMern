@@ -1,4 +1,9 @@
-// src/components/pets/PetsList.jsx
+
+
+/* NO NEED TO USE DIRECT FETCH TO ADMIN 
+
+
+
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
 
@@ -94,3 +99,4 @@ const PetsList = ({ setPet }) => {
 };
 
 export default PetsList;
+*/

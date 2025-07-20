@@ -1,7 +1,7 @@
 // src/components/pets/PetForm.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
-import '../../styles/PetForm.css'; // Optional external CSS if needed
+import '../../styles/PetForm.css';
 
 const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
   const [formData, setFormData] = useState({
@@ -54,7 +54,6 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
       });
 
       onPetAdded(res.data);
-
       setFormData({ name: '', type: 'dog', age: '', description: '', image: null });
       e.target.reset();
     } catch (err) {
@@ -65,8 +64,16 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
   };
 
   return (
-    <div className="card shadow p-5 rounded-4 border-0 bg-light mb-5">
-      <h3 className="mb-4 fw-bold text-success">{existingPet ? '✏️ Edit Pet' : '➕ Add New Pet'}</h3>
+    <div
+      className="card p-5 rounded-4 border-0 shadow-lg mb-5"
+      style={{
+        background: 'linear-gradient(to bottom right, #f8f9fa, #e9f7ef)',
+        fontFamily: "'Poppins', sans-serif",
+      }}
+    >
+      <h2 className="mb-4 fw-bold text-center text-success">
+        {existingPet ? '✏️ Edit Pet' : '➕ Add New Pet'}
+      </h2>
 
       {error && <div className="alert alert-danger">{error}</div>}
 
@@ -81,6 +88,7 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
               className="form-control form-control-lg"
               value={formData.name}
               onChange={handleChange}
+              placeholder="Enter pet's name"
             />
           </div>
 
@@ -108,6 +116,7 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
               className="form-control form-control-lg"
               value={formData.age}
               onChange={handleChange}
+              placeholder="Age in years"
             />
           </div>
 
@@ -132,18 +141,25 @@ const PetForm = ({ onPetAdded, existingPet = null, onCancelEdit }) => {
             className="form-control form-control-lg"
             value={formData.description}
             onChange={handleChange}
+            placeholder="Write something adorable..."
           />
         </div>
 
-        <div className="d-flex gap-3">
-          <button className="btn btn-lg btn-success px-4" type="submit" disabled={loading}>
+        <div className="d-flex gap-3 justify-content-center">
+          <button
+            className="btn btn-lg btn-success px-5"
+            type="submit"
+            disabled={loading}
+            style={{ fontSize: '1.2rem', fontWeight: '600' }}
+          >
             {loading ? 'Saving...' : existingPet ? 'Update Pet' : 'Add Pet'}
           </button>
           {existingPet && (
             <button
               type="button"
-              className="btn btn-lg btn-outline-secondary px-4"
+              className="btn btn-lg btn-outline-secondary px-5"
               onClick={onCancelEdit}
+              style={{ fontSize: '1.2rem', fontWeight: '500' }}
             >
               Cancel
             </button>
