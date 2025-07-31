@@ -1,4 +1,4 @@
-
+/* NO NEED TO USE DIRECT FETCH TO ADMIN
 
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axios';
@@ -84,3 +84,4 @@ const ContactList = () => {
 
 export default ContactList;
 
+*/

@@ -10,7 +10,7 @@ const petRoutes = require('./routes/pets');
 const rescueRoutes = require('./routes/rescue');
 const contactRoutes = require('./routes/contact');
 const adoptionRoutes = require('./routes/adoptions'); 
-
+  
 const { verifyToken } = require('./middleware/auth');
 
 const app = express();
