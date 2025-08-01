@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: false, // <== ✅ optional for Google users
+    required: false, //  optional for Google users
   },
   role: {
     type: String,
@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
 
-  // ✅ New fields for forgot/reset password
+  // New fields for forgot/reset password
   resetPasswordToken: {
     type: String,
   },

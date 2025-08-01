@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
     const payload = {
       id: user.id,
       email: user.email,
-      isAdmin: user.role === 'admin' // ✅ Add isAdmin flag
+      isAdmin: user.role === 'admin' // Add isAdmin flag
     };
 
     jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1d' }, (err, token) => {

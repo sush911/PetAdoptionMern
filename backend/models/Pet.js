@@ -6,7 +6,7 @@ const petSchema = new mongoose.Schema({
     type: String,
     enum: ['dog', 'cat'],
     required: true,
-    lowercase: true, // <-- this ensures the value is stored in lowercase
+    lowercase: true, // this ensures the value is stored in lowercase
     trim: true
   },
   age: { type: Number, required: true },
